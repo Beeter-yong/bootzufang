@@ -1,0 +1,149 @@
+body{
+    font-family: 'Microsoft YaHei', sans-serif;
+}
+.navbar-default{
+    background-color: #fff;
+    border: none;
+    /* box-shadow: 0px 2px 8px 0px rgba(50,50,50,0.25); */
+}
+.navbar-default .navbar-brand{
+    font-size: 24px;
+    font-weight: bold;
+    height: 70px;
+    line-height: 35px;
+}
+.navbar-default .navbar-nav>li>a{
+    font-size: 16px;
+    font-weight: bold;
+    height: 70px;
+    line-height: 35px;
+}
+
+/* home-css */
+#home{
+    background: url("../images/backgrond00.jpg");
+    height: 500px;
+    background-size: cover;
+    color: #fff;
+    margin-top: 70px;
+    text-align: center;
+    width: 100%;
+}
+
+#home h1{
+    font-weight: bold;
+    letter-spacing: 3px;
+    margin-top: 90px;
+    margin-bottom: 25px;
+}
+#home img{
+    margin-top: 40px;
+    display: inline-block;
+}
+
+/* project */
+#project{
+    text-align: center;
+    display: block;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+#project h2{
+    display: block; 
+    font-size: 2em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+.community{
+    height: 300px;
+    display: block;
+    padding: 4px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    max-width: 310px;
+    margin-bottom: 30px;
+    
+}
+.community img{
+    width: 100%;
+    height: 50%;
+    vertical-align: middle;
+}
+.community p{
+    font-style:normal;
+    font-family: 'Microsoft YaHei', sans-serif;
+    font-weight: bold;
+}
+
+/* 反馈 */
+#contact{
+    background-color: black;
+    color: #fff;
+}
+#contact h2{
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+#contact p{
+    line-height: 20px;
+    margin-top: 20px;
+}
+#contact .form-control{
+    border: none;
+    border-radius: 0;
+    margin-bottom: 20px;
+}
+
+
+/*图形*/
+#graphic{
+    text-align: center;
+    display: block;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+#graphic h2{
+    display: block;
+    font-size: 2em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+.card-header {
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(0,0,0,.03);
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
+.card-body {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1.25rem;
+}
+.chat{
+    width: 1126px;
+    height: 381px;
+}
+@media screen and (max-width: 1140px) {
+    .chat {
+        width: 720px;
+        height: 381px;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .chat {
+        width: 450px;
+        height: 381px;
+    }
+}

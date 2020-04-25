@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
+
+    <script src="js/jquery.js"></script>
+    <!--引入bootstrap-->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <!--引入Echarts-->
+    <script src="js/echarts.min.js"></script>
+
+
+    <title>聚合租房网</title>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- 小屏幕导航按钮和logo -->
+            <div class="navbar-header">
+                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="index.html" class="navbar-brand">聚合租房</a>
+            </div>
+
+            <!-- 导航 -->
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="index.html">搜索小区</a></li>
+                    <li><a href="index.html">搜索房源</a></li>
+                    <li><a href="index.html">推荐房源</a></li>
+                    <li><a href="#contact">反馈</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- home -->
+    <section id="home">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <h1>北京租房房源聚合统计</h1>
+                    <p>爬取多家网站北京租房信息，将信息综合到聚合租房网站中</p>
+                    <p>提供智能房源推荐功能，匹配您的最佳房源</p>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-3"></div>
+                <div class="col-xs-2">
+                    <img src="images/58Log.jpg" class="img-responsive img-circle" alt="58同城租房">
+                </div>
+                <div class="col-xs-2">
+                    <img src="images/lianjiaLog.jpg" class="img-responsive img-circle" alt="链家租房">
+                </div>
+                <div class="col-xs-2">
+                    <img src="images/fangtianxiaLog.jpg" class="img-responsive img-circle" alt="房天下租房">
+                </div>
+                <div class="col-xs-3"></div>
+            </div>
+        </div>
+    </section>
+
+    <!--图形数据展示-->
+    <section id="graphic" class="container">
+        <div class="container projects">
+            <div class="projects-header page-header">
+                <h2>相关数据展示</h2>
+                <p>---------------------------</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="glyphicon glyphicon-signal"></i> 链家/58同城小区数据量
+                    </div>
+                    <div class="card-body row" id="chart-unitprice">
+                        <div>
+                          <div class="chat col-md-12 col-sm-12" id="lianjiaShopping"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- project -->
+    <section id="project" class="container">
+        <div class="container projects">
+            <div class="projects-header page-header">
+                <h2>相关优质小区推荐</h2>
+                <p>---------------------------</p>
+            </div>
+        </div>
+        <div class="row">
+            <!--循环产生32个推荐模块-->
+            <div class="col-sm-6 col-md-4 col-lg-3 " th:each="tongchengAutoInfo:${tongchengAutoInfos}">
+                <div class="community">
+                    <a href="#" title="小区链接" target="_blank">
+                        <img th:src="${tongchengAutoInfo.communityImg}" alt="图片链接">
+                    </a>
+                    <div class="caption">
+                        <h3>
+                            <a href="#" title="小区详情" target="_blank" >
+                                <span th:text="${tongchengAutoInfo.getCommunityName()}"></span>
+                            </a>
+                        </h3>
+                        <p>
+                            <span th:text="${tongchengAutoInfo.getRegional()}"></span>
+                            <span th:text="${tongchengAutoInfo.getShopping()}"></span><br/>
+                            <span th:text="${tongchengAutoInfo.getBuildingType()}"></span><br/>
+                            <span th:text="${tongchengAutoInfo.getTabSpecial()}"></span><br/>
+                            <a th:href="${tongchengAutoInfo.getCommunityUrl()}" target="_blank">小区链接</a>
+                            | |<a th:href="${tongchengAutoInfo.getRentUrl()}" target="_blank">租房链接</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 " th:each="lianjiaAutoInfo:${lianjiaAutoInfos}">
+                <div class="community">
+                    <a href="#" title="小区详情" target="_blank">
+                        <img src="images/lianjiaLog.jpg" th:data-src="${#strings.replace(lianjiaAutoInfo.communityImg,'710x400','232x174')}" alt="图片链接">
+                    </a>
+                    <div class="caption">
+                        <h3>
+                            <a href="#" title="小区链接" target="_blank" >
+                                <span th:text="${lianjiaAutoInfo.getCommunityName()}"></span>
+                            </a>
+                        </h3>
+                        <p>
+                            <i th:text="${lianjiaAutoInfo.getRegional()}"></i>
+                            /<i th:text="${lianjiaAutoInfo.getShopping()}"></i><br/>
+                            <i th:text="${lianjiaAutoInfo.getBuildingType()}"></i><br/>
+                            <i th:text="${lianjiaAutoInfo.getTag()}"></i><br/>
+                            <a th:href="${lianjiaAutoInfo.getCommunityUrl()}" target="_blank">小区链接</a>
+                            | |<a th:href="${lianjiaAutoInfo.getRentUrl()}" target="_blank">租房链接</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- 反馈 -->
+    <section id="contact" class="container">
+        <div style="text-align: center">
+            <h2>反馈联系</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>聚合租房网正在开发中...</h2>
+                <p>如果您有什么意见，非常感谢您的提出</p>
+                <p class="glyphicon glyphicon-envelope"> 邮箱：953059536@qq.com</p>
+            </div>
+            <div class="col-md-6">
+                <form action="#" method="POST">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="您的姓名">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="email" class="form-control" placeholder="您的邮箱">
+                    </div>
+                    <div class="col-md-12">
+                        <textarea class="form-control" placeholder="您的建议"></textarea>
+                    </div>
+                    <div class="col-md-3 col-md-push-9">
+                        <input type="submit" class="form-control" value="提交">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- 尾部 -->
+    <footer>
+        <div style="text-align: center">
+            感谢您的使用
+        </div>
+    </footer>
+</body>
+<!--图像展示-->
+<script type="text/javascript" th:inline="javascript">
+    <!--链家展示-->
+    var myChart = echarts.init(document.getElementById('lianjiaShopping'));
+    //处理后端获取的数据
+    var dataAxis = [];
+    var lianjiadata = [];
+    var tongchengdata = [];
+
+    var lianjialist = [[${lianjiaRegionalNum}]]
+    var tongchenglist = [[${tongchengRegionalNums}]]
+    for(var i = 0; i < lianjialist.length; i++){
+        dataAxis[i] = lianjialist[i].regional;
+        lianjiadata[i] = lianjialist[i].num;
+        tongchengdata[i] = tongchenglist[i].num;
+    }
+
+
+    var yMax = 2000;
+    var dataShadow = [];
+
+    for (var i = 0; i < tongchengdata.length; i++) {
+        dataShadow.push(yMax);
+    }
+
+    option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        grid: {
+            left: '1%',
+            right: '1%',
+            bottom: '1%',
+            top: '8%',
+            containLabel: true
+        },
+        legend: {},
+        xAxis: {
+            data: dataAxis,
+            axisLabel: {
+                textStyle: {
+                    color: '#000'
+                }
+            },
+            axisTick: {
+                show: false
+            },
+            axisLine: {
+                show: false
+            },
+            z: -100
+        },
+        yAxis: {
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                textStyle: {
+                    color: '#999'
+                }
+            }
+        },
+        dataZoom: [
+            {
+                type: 'inside'
+            }
+        ],
+        series: [
+            { // For shadow
+                // name: '链家',
+                type: 'bar',
+                itemStyle: {
+                    color: 'rgba(0,0,0,0.05)'
+                },
+                barGap: '10%',
+                barCategoryGap: '1%',
+                data: dataShadow,
+                animation: false
+            },
+            {
+                name: '链家',
+                type: 'bar',
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(
+                        0, 0, 0, 1,
+                        [
+                            {offset: 0, color: '#83bff6'},
+                            {offset: 0.5, color: '#188df0'},
+                            {offset: 1, color: '#188df0'}
+                        ]
+                    )
+                },
+                emphasis: {
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(
+                            0, 0, 0, 1,
+                            [
+                                {offset: 0, color: '#2378f7'},
+                                {offset: 0.7, color: '#2378f7'},
+                                {offset: 1, color: '#83bff6'}
+                            ]
+                        )
+                    }
+                },
+                data: lianjiadata
+            },
+            {
+                name: '58同城',
+                type: 'bar',
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(
+                        0, 0, 0, 2,
+                        [
+                            {offset: 0, color: '#0575E6'},
+                            // {offset: 0.5, color: '#188df0'},
+                            {offset: 1, color: '#021B79'}
+                        ]
+                    )
+                },
+                emphasis: {
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(
+                            0, 0, 0, 1,
+                            [
+                                {offset: 0, color: '#2378f7'},
+                                {offset: 0.7, color: '#2378f7'},
+                                {offset: 1, color: '#83bff6'}
+                            ]
+                        )
+                    }
+                },
+                data: tongchengdata
+            }
+        ]
+    };
+
+    // Enable data zoom when user click bar.
+    var zoomSize = 6;
+    myChart.on('click', function (params) {
+        console.log(dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)]);
+        myChart.dispatchAction({
+            type: 'dataZoom',
+            startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
+            endValue: dataAxis[Math.min(params.dataIndex + zoomSize / 2, data.length - 1)]
+        });
+    });
+    myChart.setOption(option);
+
+    $(window).resize(function() {
+        setTimeout(function(){
+            myChart.resize();
+        },100)
+    });
+    // window.addEventListener("resize", function(){
+    //     myChart.resize();
+    // });
+
+</script>
+<!--加载图片延迟-->
+<!--<script>-->
+    <!--function query(selector) {-->
+        <!--return Array.from(document.querySelectorAll(selector));-->
+    <!--}-->
+    <!--var io = new IntersectionObserver(function(items) {-->
+        <!--items.forEach(function(item) {-->
+            <!--var target = item.target;-->
+            <!--if(target.getAttribute('src') == 'images/lianjiaLog.jpg') {-->
+                <!--target.src = target.getAttribute('data-src');-->
+                <!--alert(target.src)-->
+            <!--}-->
+        <!--})-->
+    <!--});-->
+    <!--query('img').forEach(function(item) {-->
+        <!--io.observe(item);-->
+    <!--});-->
+<!--</script>-->
+</html>

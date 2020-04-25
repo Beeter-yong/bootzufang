@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/css/community.css" rel="stylesheet">
+
+    <script src="../static/js/jquery.js"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+    <!-- 引用echarts -->
+    <script src="../static/js/echarts.min.js"></script>
+    <!-- 引用地图 -->
+    <script type="text/javascript"
+        src="http://api.map.baidu.com/api?v=2.0&ak=s5bz9CS1bjgcbhte4MZ36VFwxeStTuz9"></script>
+    <script src="../static/js/community.js"></script>
+
+    <title>小区详情</title>
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- 小屏幕导航按钮和logo -->
+            <div class="navbar-header">
+                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="index.html" class="navbar-brand">聚合租房</a>
+            </div>
+
+            <!-- 导航 -->
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="index.html">搜索小区</a></li>
+                    <li><a href="index.html">搜索房源</a></li>
+                    <li><a href="index.html">推荐房源</a></li>
+                    <li><a href="#contact">反馈</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- community -->
+    <div id="community" class="container">
+        <div class="row">
+            <div class="col-12">
+                <div id="alert"></div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        <h2 class="page-header">小区信息
+                            <!-- <button type="button" class="btn btn-success btn-sm" onclick="collect()">关注小区</button> -->
+                        </h2>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header01">
+                        <h4>
+                            <i class="glyphicon glyphicon-record"></i> 基本信息
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 30%">小区名:</td>
+                                                <td id="title">中国河北省邯郸市魏县牙里镇万达广场</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 30%">参考均价:</td>
+                                                <td id="price"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 30%">建造时间:</td>
+                                                <td id="year"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 30%">建筑类型:</td>
+                                                <td id="housetype"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 30%">物业公司:</td>
+                                                <td id="service"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 30%">开发商:</td>
+                                                <td id="company"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 30%">楼栋总数:</td>
+                                                <td id="building_num"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 30%">房屋总数:</td>
+                                                <td id="house_num"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 30%">在租房源:</td>
+                                                <td id="onrent"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>物业费:</td>
+                                                <td id="cost"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>行政区:</td>
+                                                <td id="district"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>所在商圈:</td>
+                                                <td id="bizcircle"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-7 col-sm-7">
+                                <a href="#" title="小区链接" target="_blank">
+                                    <img src="https://image1.ljcdn.com/hdic-resblock/91bec5d1-417a-494e-b652-bba9a7ce0d2f.jpg.710x400.jpg"
+                                        alt="图片链接">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        <h2 class="page-header">相关数据</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="glyphicon glyphicon-signal"></i> 各网站布局的数量
+                            </div>
+                            <div class="card-body row" id="chart-unitprice">
+                                <div class="chat col-md-12 col-sm-12" id="homeEveryNum"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="glyphicon glyphicon-signal"></i> 各网站结构布局的均价
+                            </div>
+                            <div class="card-body row" id="chart-unitprice">
+                                <div class="chat col-md-12 col-sm-12" id="homeEveryPrice"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="glyphicon glyphicon-cd"></i> 小区布局结构数量
+                            </div>
+                            <div class="card-body row" id="chart-detail">
+                                <div class="chat col-md-12 col-sm-12" id="homeNum"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="glyphicon glyphicon-cd"></i> 小区布局结构均价
+                            </div>
+                            <div class="card-body row" id="chart-detail">
+                                <div class="chat col-md-12 col-sm-12" id="homePrice"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 地图 -->
+        <div id="map" class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="card-header">
+                    <h4><i class="glyphicon glyphicon-map-marker"></i>小区位置
+                        <div class="pull-right">
+                            <a id="school" class="btn btn-primary btn-sm" role="button">学校</a>
+                            <a id="hospital" class="btn btn-success btn-sm" role="button">医院</a>
+                            <a id="subway" class="btn btn-info btn-sm" role="button">地铁</a>
+                            <a id="bus" class="btn btn-warning btn-sm" role="button">公交</a>
+                            <a id="restaurant" class="btn btn-danger btn-sm" role="button">餐馆</a>
+                            <a id="shopping" class="btn btn-secondary btn-sm" role="button">购物</a>
+                        </div>
+                    </h4>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div id="allmap"></div>
+            </div>
+        </div>
+
+        <!-- 小区租房展示 -->
+        <div id="rent_header" class="col-sm-12 col-md-12">
+            <h4 style="font-weight: bold"><i class="glyphicon glyphicon-record"></i>小区房源</h4>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-md-4 col-lg-3 " th:each="tongchengAutoInfo:${tongchengAutoInfos}">
+                <div class="rent">
+                    <a href="#" title="小区链接" target="_blank">
+                        <img src="../static/images/58Log.jpg" th:src="${tongchengAutoInfo.communityImg}" alt="图片链接">
+                    </a>
+                    <div class="caption">
+                        <h3>
+                            <a href="#" title="小区详情" target="_blank" >
+                                <span th:text="${tongchengAutoInfo.getCommunityName()}">5000/月</span>
+                            </a>
+                        </h3>
+                        <p>
+                            <span th:text="${tongchengAutoInfo.getRegional()}">朝阳</span>
+                            <span th:text="${tongchengAutoInfo.getShopping()}">/海淀</span><br/>
+                            <span th:text="${tongchengAutoInfo.getBuildingType()}">中层(8层)</span><br/>
+                            <span th:text="${tongchengAutoInfo.getTabSpecial()}">整租</span><br/>
+                            <a th:href="${tongchengAutoInfo.getCommunityUrl()}" target="_blank">租房详情</a>
+                            | |<a th:href="${tongchengAutoInfo.getRentUrl()}" target="_blank">租房链接</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 " th:each="tongchengAutoInfo:${tongchengAutoInfos}">
+                    <div class="rent">
+                        <a href="#" title="小区链接" target="_blank">
+                            <img src="../static/images/58Log.jpg" th:src="${tongchengAutoInfo.communityImg}" alt="图片链接">
+                        </a>
+                        <div class="caption">
+                            <h3>
+                                <a href="#" title="小区详情" target="_blank" >
+                                    <span th:text="${tongchengAutoInfo.getCommunityName()}">5000/月</span>
+                                </a>
+                            </h3>
+                            <p>
+                                <span th:text="${tongchengAutoInfo.getRegional()}">朝阳</span>
+                                <span th:text="${tongchengAutoInfo.getShopping()}">/海淀</span><br/>
+                                <span th:text="${tongchengAutoInfo.getBuildingType()}">中层(8层)</span><br/>
+                                <span th:text="${tongchengAutoInfo.getTabSpecial()}">整租</span><br/>
+                                <a th:href="${tongchengAutoInfo.getCommunityUrl()}" target="_blank">租房详情</a>
+                                | |<a th:href="${tongchengAutoInfo.getRentUrl()}" target="_blank">租房链接</a>
+                            </p>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 " th:each="tongchengAutoInfo:${tongchengAutoInfos}">
+                    <div class="rent">
+                        <a href="#" title="小区链接" target="_blank">
+                            <img src="../static/images/58Log.jpg" th:src="${tongchengAutoInfo.communityImg}" alt="图片链接">
+                        </a>
+                        <div class="caption">
+                            <h3>
+                                <a href="#" title="小区详情" target="_blank" >
+                                    <span th:text="${tongchengAutoInfo.getCommunityName()}">5000/月</span>
+                                </a>
+                            </h3>
+                            <p>
+                                <span th:text="${tongchengAutoInfo.getRegional()}">朝阳</span>
+                                <span th:text="${tongchengAutoInfo.getShopping()}">/海淀</span><br/>
+                                <span th:text="${tongchengAutoInfo.getBuildingType()}">中层(8层)</span><br/>
+                                <span th:text="${tongchengAutoInfo.getTabSpecial()}">整租</span><br/>
+                                <a th:href="${tongchengAutoInfo.getCommunityUrl()}" target="_blank">租房详情</a>
+                                | |<a th:href="${tongchengAutoInfo.getRentUrl()}" target="_blank">租房链接</a>
+                            </p>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 " th:each="tongchengAutoInfo:${tongchengAutoInfos}">
+                    <div class="rent">
+                        <a href="#" title="小区链接" target="_blank">
+                            <img src="../static/images/58Log.jpg" th:src="${tongchengAutoInfo.communityImg}" alt="图片链接">
+                        </a>
+                        <div class="caption">
+                            <h3>
+                                <a href="#" title="小区详情" target="_blank" >
+                                    <span th:text="${tongchengAutoInfo.getCommunityName()}">5000/月</span>
+                                </a>
+                            </h3>
+                            <p>
+                                <span th:text="${tongchengAutoInfo.getRegional()}">朝阳</span>
+                                <span th:text="${tongchengAutoInfo.getShopping()}">/海淀</span><br/>
+                                <span th:text="${tongchengAutoInfo.getBuildingType()}">中层(8层)</span><br/>
+                                <span th:text="${tongchengAutoInfo.getTabSpecial()}">整租</span><br/>
+                                <a th:href="${tongchengAutoInfo.getCommunityUrl()}" target="_blank">租房详情</a>
+                                | |<a th:href="${tongchengAutoInfo.getRentUrl()}" target="_blank">租房链接</a>
+                            </p>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 " th:each="tongchengAutoInfo:${tongchengAutoInfos}">
+                    <div class="rent">
+                        <a href="#" title="小区链接" target="_blank">
+                            <img src="../static/images/58Log.jpg" th:src="${tongchengAutoInfo.communityImg}" alt="图片链接">
+                        </a>
+                        <div class="caption">
+                            <h3>
+                                <a href="#" title="小区详情" target="_blank" >
+                                    <span th:text="${tongchengAutoInfo.getCommunityName()}">5000/月</span>
+                                </a>
+                            </h3>
+                            <p>
+                                <span th:text="${tongchengAutoInfo.getRegional()}">朝阳</span>
+                                <span th:text="${tongchengAutoInfo.getShopping()}">/海淀</span><br/>
+                                <span th:text="${tongchengAutoInfo.getBuildingType()}">中层(8层)</span><br/>
+                                <span th:text="${tongchengAutoInfo.getTabSpecial()}">整租</span><br/>
+                                <a th:href="${tongchengAutoInfo.getCommunityUrl()}" target="_blank">租房详情</a>
+                                | |<a th:href="${tongchengAutoInfo.getRentUrl()}" target="_blank">租房链接</a>
+                            </p>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 " th:each="tongchengAutoInfo:${tongchengAutoInfos}">
+                    <div class="rent">
+                        <a href="#" title="小区链接" target="_blank">
+                            <img src="../static/images/58Log.jpg" th:src="${tongchengAutoInfo.communityImg}" alt="图片链接">
+                        </a>
+                        <div class="caption">
+                            <h3>
+                                <a href="#" title="小区详情" target="_blank" >
+                                    <span th:text="${tongchengAutoInfo.getCommunityName()}">5000/月</span>
+                                </a>
+                            </h3>
+                            <p>
+                                <span th:text="${tongchengAutoInfo.getRegional()}">朝阳</span>
+                                <span th:text="${tongchengAutoInfo.getShopping()}">/海淀</span><br/>
+                                <span th:text="${tongchengAutoInfo.getBuildingType()}">中层(8层)</span><br/>
+                                <span th:text="${tongchengAutoInfo.getTabSpecial()}">整租</span><br/>
+                                <a th:href="${tongchengAutoInfo.getCommunityUrl()}" target="_blank">租房详情</a>
+                                | |<a th:href="${tongchengAutoInfo.getRentUrl()}" target="_blank">租房链接</a>
+                            </p>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+    <!-- 尾部 -->
+    <footer>
+        <div style="text-align: center">
+            感谢您的使用
+        </div>
+    </footer>
+
+</body>
+
+</html>
+<!-- 各网站布局的数量 -->
+<script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('homeEveryNum'));
+    //处理后端获取的数据
+    var dataAxis = ['1室0厅1卫', '1室1厅1卫', '1房间1卫', '2室1厅1卫', '2室1厅2卫', '2室2厅1卫', '3室1厅1卫', '3室1厅2卫', '3室2厅2卫'];
+    var lianjiadata = [220, 182, 191, 234, 290, 330, 310, 123, 442];
+    var tongchengdata = [149, 210, 122, 133, 334, 198, 123, 125, 220];
+
+    var yMax = 500;
+    var dataShadow = [];
+
+    for (var i = 0; i < tongchengdata.length; i++) {
+        dataShadow.push(yMax);
+    }
+
+    option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        grid: {
+            left: '1%',
+            right: '1%',
+            bottom: '1%',
+            top: '8%',
+            containLabel: true
+        },
+        legend: {},
+        xAxis: {
+            data: dataAxis,
+            axisLabel: {
+                textStyle: {
+                    color: '#000'
+                }
+            },
+            axisTick: {
+                show: false
+            },
+            axisLine: {
+                show: false
+            },
+            z: -100
+        },
+        yAxis: {
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                textStyle: {
+                    color: '#999'
+                }
+            }
+        },
+        dataZoom: [
+            {
+                type: 'inside'
+            }
+        ],
+        series: [
+            { // For shadow
+                // name: '链家',
+                type: 'bar',
+                itemStyle: {
+                    color: 'rgba(0,0,0,0.05)'
+                },
+                barGap: '10%',
+                barCategoryGap: '1%',
+                data: dataShadow,
+                animation: false
+            },
+            {
+                name: '链家',
+                type: 'bar',
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(
+                        0, 0, 0, 1,
+                        [
+                            {offset: 0, color: '#83bff6'},
+                            {offset: 0.5, color: '#188df0'},
+                            {offset: 1, color: '#188df0'}
+                        ]
+                    )
+                },
+                emphasis: {
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(
+                            0, 0, 0, 1,
+                            [
+                                {offset: 0, color: '#2378f7'},
+                                {offset: 0.7, color: '#2378f7'},
+                                {offset: 1, color: '#83bff6'}
+                            ]
+                        )
+                    }
+                },
+                data: lianjiadata
+            },
+            {
+                name: '58同城',
+                type: 'bar',
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(
+                        0, 0, 0, 2,
+                        [
+                            {offset: 0, color: '#0575E6'},
+                            // {offset: 0.5, color: '#188df0'},
+                            {offset: 1, color: '#021B79'}
+                        ]
+                    )
+                },
+                emphasis: {
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(
+                            0, 0, 0, 1,
+                            [
+                                {offset: 0, color: '#2378f7'},
+                                {offset: 0.7, color: '#2378f7'},
+                                {offset: 1, color: '#83bff6'}
+                            ]
+                        )
+                    }
+                },
+                data: tongchengdata
+            }
+        ]
+    };
+
+    // Enable data zoom when user click bar.
+    var zoomSize = 6;
+    myChart.on('click', function (params) {
+        console.log(dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)]);
+        myChart.dispatchAction({
+            type: 'dataZoom',
+            startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
+            endValue: dataAxis[Math.min(params.dataIndex + zoomSize / 2, data.length - 1)]
+        });
+    });
+    myChart.setOption(option);
+
+    $(window).resize(function() {
+        setTimeout(function(){
+            myChart.resize();
+        },100)
+    });
+    // window.addEventListener("resize", function(){
+    //     myChart.resize();
+    // });
+
+</script>
+<!-- 小区布局结构数量 -->
+<script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('homeNum'));
+    option = {
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+            left: 'center',
+            top: 'bottom',
+            // data: ['rose1', 'rose2', 'rose3', 'rose4', 'rose5', 'rose6', 'rose7', 'rose8']
+        },
+
+        series: [
+            {
+                name: '小区布局',
+                type: 'pie',
+                radius: [30, 110],
+                center: ['50%', '40%'],
+                roseType: 'area',
+                data: [
+                    { value: 10, name: '一室一厅' },
+                    { value: 5, name: '2室2厅1卫' },
+                    { value: 15, name: '3室1厅2卫' },
+                    { value: 25, name: '1室0厅1卫' },
+                    { value: 20, name: '1室1厅1卫' },
+                    { value: 35, name: '2室1厅1卫' },
+                    { value: 30, name: '2室1厅2卫' },
+                    { value: 40, name: '1房间1卫' }
+                ]
+            }
+        ]
+    };
+    myChart.setOption(option);
+
+    // setTimeout(function () {
+    //     window.onresize = function () {
+    //         myChart.resize();
+    //     }
+    // }, 200)
+    window.addEventListener("resize", function(){
+        myChart.resize();
+    });
+</script>
+<!-- 各网站结构布局的均价 -->
+<script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('homeEveryPrice'));
+    //处理后端获取的数据
+    var dataAxis = ['1室0厅1卫', '1室1厅1卫', '1房间1卫', '2室1厅1卫', '2室1厅2卫', '2室2厅1卫', '3室1厅1卫', '3室1厅2卫', '3室2厅2卫'];
+    var lianjiadata = [220, 182, 191, 234, 290, 330, 310, 123, 442];
+    var tongchengdata = [149, 210, 122, 133, 334, 198, 123, 125, 220];
+
+    var yMax = 500;
+    var dataShadow = [];
+
+    for (var i = 0; i < tongchengdata.length; i++) {
+        dataShadow.push(yMax);
+    }
+
+    option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        grid: {
+            left: '1%',
+            right: '1%',
+            bottom: '1%',
+            top: '8%',
+            containLabel: true
+        },
+        legend: {},
+        xAxis: {
+            data: dataAxis,
+            axisLabel: {
+                textStyle: {
+                    color: '#000'
+                }
+            },
+            axisTick: {
+                show: false
+            },
+            axisLine: {
+                show: false
+            },
+            z: -100
+        },
+        yAxis: {
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                textStyle: {
+                    color: '#999'
+                }
+            }
+        },
+        dataZoom: [
+            {
+                type: 'inside'
+            }
+        ],
+        series: [
+            { // For shadow
+                // name: '链家',
+                type: 'bar',
+                itemStyle: {
+                    color: 'rgba(0,0,0,0.05)'
+                },
+                barGap: '10%',
+                barCategoryGap: '1%',
+                data: dataShadow,
+                animation: false
+            },
+            {
+                name: '链家',
+                type: 'bar',
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(
+                        0, 0, 0, 1,
+                        [
+                            {offset: 0, color: '#83bff6'},
+                            {offset: 0.5, color: '#188df0'},
+                            {offset: 1, color: '#188df0'}
+                        ]
+                    )
+                },
+                emphasis: {
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(
+                            0, 0, 0, 1,
+                            [
+                                {offset: 0, color: '#2378f7'},
+                                {offset: 0.7, color: '#2378f7'},
+                                {offset: 1, color: '#83bff6'}
+                            ]
+                        )
+                    }
+                },
+                data: lianjiadata
+            },
+            {
+                name: '58同城',
+                type: 'bar',
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(
+                        0, 0, 0, 2,
+                        [
+                            {offset: 0, color: '#0575E6'},
+                            // {offset: 0.5, color: '#188df0'},
+                            {offset: 1, color: '#021B79'}
+                        ]
+                    )
+                },
+                emphasis: {
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(
+                            0, 0, 0, 1,
+                            [
+                                {offset: 0, color: '#2378f7'},
+                                {offset: 0.7, color: '#2378f7'},
+                                {offset: 1, color: '#83bff6'}
+                            ]
+                        )
+                    }
+                },
+                data: tongchengdata
+            }
+        ]
+    };
+
+    // Enable data zoom when user click bar.
+    var zoomSize = 6;
+    myChart.on('click', function (params) {
+        console.log(dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)]);
+        myChart.dispatchAction({
+            type: 'dataZoom',
+            startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
+            endValue: dataAxis[Math.min(params.dataIndex + zoomSize / 2, data.length - 1)]
+        });
+    });
+    myChart.setOption(option);
+
+    $(window).resize(function() {
+        setTimeout(function(){
+            myChart.resize();
+        },100)
+    });
+    // window.addEventListener("resize", function(){
+    //     myChart.resize();
+    // });
+
+</script>
+<!-- 小区布局均价 -->
+<script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('homePrice'));
+    option = {
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+            left: 'center',
+            top: 'bottom',
+            // data: ['rose1', 'rose2', 'rose3', 'rose4', 'rose5', 'rose6', 'rose7', 'rose8']
+        },
+
+        series: [
+            {
+                name: '小区布局',
+                type: 'pie',
+                radius: [30, 110],
+                center: ['50%', '40%'],
+                roseType: 'area',
+                data: [
+                    { value: 10, name: '一室一厅' },
+                    { value: 5, name: '2室2厅1卫' },
+                    { value: 15, name: '3室1厅2卫' },
+                    { value: 25, name: '1室0厅1卫' },
+                    { value: 20, name: '1室1厅1卫' },
+                    { value: 35, name: '2室1厅1卫' },
+                    { value: 30, name: '2室1厅2卫' },
+                    { value: 40, name: '1房间1卫' }
+                ]
+            }
+        ]
+    };
+    myChart.setOption(option);
+
+    // setTimeout(function () {
+    //     window.onresize = function () {
+    //         myChart.resize();
+    //     }
+    // }, 200)
+    window.addEventListener("resize", function(){
+        myChart.resize();
+    });
+</script>
+<!-- 地图设置 -->
+<script type="text/javascript">
+    var map = new BMap.Map("allmap");
+    var point = "石园";
+    map.centerAndZoom(point, 15);
+    // 添加地图类型控件
+	map.addControl(new BMap.MapTypeControl({
+		mapTypes:[
+            BMAP_NORMAL_MAP,
+            BMAP_HYBRID_MAP
+        ]}));	
+    var stCtrl = new BMap.PanoramaControl(); //构造全景控件
+	stCtrl.setOffset(new BMap.Size(20, 40));
+	map.addControl(stCtrl);//添加全景控件
+	map.setCurrentCity("北京");          // 设置地图显示的城市 此项是必须设置的
+	map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+    
+    // 创建地址解析器实例
+	var myGeo = new BMap.Geocoder();
+	// 将地址解析结果显示在地图上,并调整地图视野  
+	myGeo.getPoint(point, function(point){
+		if (point) {
+            map.centerAndZoom(point, 15);
+            var marker = new BMap.Marker(point)
+            marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+			map.addOverlay(marker);
+		}else{
+			alert("您选择地址没有解析到结果!");
+		}
+	}, "北京市"); 
+
+    // 点击学校
+    $("#school").click(function(){
+        map.clearOverlays();
+        myGeo.getPoint(point, function(point){
+		if (point) {
+			map.centerAndZoom(point, 15);
+            var marker = new BMap.Marker(point)
+            marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+			map.addOverlay(marker);
+            // 圆形范围搜索
+            var circle = new BMap.Circle(point,1000,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3});
+            map.addOverlay(circle);
+            var local =  new BMap.LocalSearch(map, {renderOptions: {map: map, autoViewport: false}}); 
+			local.searchNearby('学校',point,1000);
+		}else{
+			alert("您选择地址没有解析到结果!");
+		}
+	}, "北京市");
+    });
+    // 点击医院
+    $("#hospital").click(function(){
+        map.clearOverlays();
+        myGeo.getPoint(point, function(point){
+		if (point) {
+			map.centerAndZoom(point, 15);
+            var marker = new BMap.Marker(point)
+            marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+			map.addOverlay(marker);
+            // 圆形范围搜索
+            var circle = new BMap.Circle(point,1000,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3});
+            map.addOverlay(circle);
+            var local =  new BMap.LocalSearch(map, {renderOptions: {map: map, autoViewport: false}}); 
+			local.searchNearby('医院',point,1000);
+		}else{
+			alert("您选择地址没有解析到结果!");
+		}
+	}, "北京市");
+    });
+    // 点击地铁
+    $("#subway").click(function(){
+        map.clearOverlays();
+        myGeo.getPoint(point, function(point){
+		if (point) {
+			map.centerAndZoom(point, 15);
+            var marker = new BMap.Marker(point)
+            marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+			map.addOverlay(marker);
+            // 圆形范围搜索
+            var circle = new BMap.Circle(point,1000,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3});
+            map.addOverlay(circle);
+            var local =  new BMap.LocalSearch(map, {renderOptions: {map: map, autoViewport: false}}); 
+			local.searchNearby('地铁',point,1000);
+		}else{
+			alert("您选择地址没有解析到结果!");
+		}
+	}, "北京市");
+    });
+    // 点击公交
+    $("#bus").click(function(){
+        map.clearOverlays();
+        myGeo.getPoint(point, function(point){
+		if (point) {
+			map.centerAndZoom(point, 15);
+            var marker = new BMap.Marker(point)
+            marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+			map.addOverlay(marker);
+            // 圆形范围搜索
+            var circle = new BMap.Circle(point,1000,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3});
+            map.addOverlay(circle);
+            var local =  new BMap.LocalSearch(map, {renderOptions: {map: map, autoViewport: false}}); 
+			local.searchNearby('公交',point,1000);
+		}else{
+			alert("您选择地址没有解析到结果!");
+		}
+	}, "北京市");
+    });
+    // 点击餐馆
+    $("#restaurant").click(function(){
+        map.clearOverlays();
+        myGeo.getPoint(point, function(point){
+		if (point) {
+			map.centerAndZoom(point, 15);
+            var marker = new BMap.Marker(point)
+            marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+			map.addOverlay(marker);
+            // 圆形范围搜索
+            var circle = new BMap.Circle(point,1000,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3});
+            map.addOverlay(circle);
+            var local =  new BMap.LocalSearch(map, {renderOptions: {map: map, autoViewport: false}}); 
+			local.searchNearby('餐馆',point,1000);
+		}else{
+			alert("您选择地址没有解析到结果!");
+		}
+	}, "北京市");
+    });
+    // 点击购物
+    $("#shopping").click(function(){
+        map.clearOverlays();
+        myGeo.getPoint(point, function(point){
+		if (point) {
+			map.centerAndZoom(point, 15);
+            var marker = new BMap.Marker(point)
+            marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+			map.addOverlay(marker); 
+            // 圆形范围搜索
+            var circle = new BMap.Circle(point,1000,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3});
+            map.addOverlay(circle);
+            var local =  new BMap.LocalSearch(map, {renderOptions: {map: map, autoViewport: false}}); 
+			local.searchNearby('购物',point,1000);
+		}else{
+			alert("您选择地址没有解析到结果!");
+		}
+	}, "北京市");
+    });
+    
+    
+</script>
+<!-- <script type="text/javascript">
+    $(document).ready(function () {
+        var queryHouseOutline = function (hid, callback) {
+            var baseURL = 'http://map.baidu.com/?reqflag=pcmap&coord_type=3&from=webmap&qt=ext&ext_ver=new&l=18';
+            var url = baseURL + "&uid=" + hid;
+            callback && (window.queryHouseOutlineCallback = callback);
+            $.ajax({
+                type: "get",
+                async: false,
+                url: url,
+                dataType: "jsonp",
+                jsonpCallback: "queryHouseOutlineCallback",
+                success: function (datas) { }
+            });
+        };
+
+        /**
+         * 模糊查询小区信息, 无返回值
+         * @param {} house  小区名称
+         * @param {} city   所属城市名称
+         * @param {} ak     百度地图AK
+         * @param {} callback   回调函数，该函数可以接收到请求的返回值
+         */
+        var queryHouse = function (house, city, ak, callback) {
+            var baseURL = 'http://api.map.baidu.com/place/v2/search?output=json&scope=2';
+            var url = baseURL + "&q=" + house + "&region=" + city + "&ak=" + ak;
+            callback && (window.queryHouseCallback = callback);
+            $.ajax({
+                type: "get",
+                async: false,
+                url: url,
+                dataType: "jsonp",
+                jsonpCallback: "queryHouseCallback",
+                success: function (datas) { }
+            });
+        };
+
+        /**
+         * 墨卡托坐标转百度坐标
+         * @param {} coordinate
+         * @return {}
+         */
+        var coordinateToPoints = function (map, coordinate) {
+            var points = [];
+            if (coordinate) {
+                var arr = coordinate.split(";");
+                if (arr) {
+                    for (var i = 0; i < arr.length; i++) {
+                        var coord = arr[i].split(",");
+                        if (coord && coord.length == 2) {
+                            var mctXY = new BMap.Pixel(coord[0], coord[1]);
+                            var project = map.getMapType().getProjection();
+                            var point = project.pointToLngLat(mctXY);
+                            points.push(new BMap.Point(point.lng, point.lat));
+                        }
+                    }
+                }
+            }
+            return points;
+        };
+        /**
+         * 墨卡托坐标解析
+         * @param {} mocator
+         * @return {}
+         */
+        var parseGeo = function (mocator) {
+            if (typeof mocator != 'string') {
+                return {};
+            }
+            var t = mocator.split("|");
+            var n = parseInt(t[0]);
+            var i = t[1];
+            var r = t[2];
+            var o = r.split(";");
+            if (n === 4) {
+                for (var a = [], s = 0; s < o.length - 1; s++) {
+                    "1" === o[s].split("-")[0] && a.push(o[s].split("-")[1]);
+                }
+                o = a;
+                o.push("");
+            }
+            var u = [];
+            switch (n) {
+                case 1:
+                    u.push(o[0]);
+                    break;
+                case 2:
+                case 3:
+                case 4:
+                    for (var s = 0; s < o.length - 1; s++) {
+                        var l = o[s];
+                        if (l.length > 100) {
+                            l = l.replace(/(-?[1-9]\d*\.\d*|-?0\.\d*[1-9]\d*|-?0?\.0+|0|-?[1-9]\d*),(-?[1-9]\d*\.\d*|-?0\.\d*[1-9]\d*|-?0?\.0+|0|-?[1-9]\d*)(,)/g,
+                                "$1,$2;");
+                            u.push(l);
+                        } else {
+                            for (var c = [], d = l.split(","), f = 0; f < d.length; f += 2) {
+                                var p = d[f];
+                                var h = d[f + 1];
+                                c.push(p + "," + h);
+                            }
+                            u.push(c.join(";"))
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            if (u.length <= 1) {
+                u = u.toString();
+            }
+
+            var result = {
+                type: n,
+                bound: i,
+                points: u
+            };
+            return result;
+        };
+
+
+        var map = new BMap.Map("allmap"); // 创建Map实例
+        map.centerAndZoom("北京", 15);
+        map.addControl(new BMap.MapTypeControl({
+            mapTypes:[
+            BMAP_NORMAL_MAP,
+            BMAP_HYBRID_MAP
+            ]
+        })); //添加地图类型控件
+        // 添加全景空间
+        var stCtrl = new BMap.PanoramaControl(); //构造全景控件
+        stCtrl.setOffset(new BMap.Size(10, 40));
+        map.addControl(stCtrl);//添加全景控件
+
+        map.enableScrollWheelZoom(false); //开启鼠标滚轮缩放
+
+        /**
+         * 第一个参数是城市名，第二参数是小区名 
+         */
+        var showArea = function (city, area) {
+            queryHouse(area, city, "s5bz9CS1bjgcbhte4MZ36VFwxeStTuz9", function (data) {
+                if (data.message == 'ok') {
+                    var houses = data.results;
+                    if (houses && houses.length > 0) {
+                        var house = houses[0];
+                        queryHouseOutline(house.uid, function (houseOutline) {
+                            var geo = houseOutline.content.geo;
+                            if (!geo) {
+                                var location = house.location;
+                                var point = new BMap.Point(location.lng, location.lat);
+                                map.centerAndZoom(point, 15);
+                                var marker = new BMap.Marker(point);
+                                marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+                                map.addOverlay(marker);
+                            } else {
+                                map.clearOverlays();
+                                var geoObj = parseGeo(geo);
+                                //边界点
+                                var points = coordinateToPoints(map, geoObj.points);
+                                var ply = new BMap.Polygon(points, {
+                                    strokeWeight: 2,
+                                    strokeColor: "#F01B2D",
+                                    strokeOpacity: 0.9,
+                                    fillColor: "transparent"
+                                }); //建立多边形覆盖物
+                                map.addOverlay(ply); //添加覆盖物
+                                map.setViewport(ply.getPath()); //调整视野 
+                            }
+                        });
+                    }
+                }
+            });
+        };
+
+        // showArea($('#cityId').val(), $('#areaId').val());
+        showArea('北京', '石园');
+        // $('#showBtn').click(function() {
+        //     debugger;
+        //     showArea($('#cityId').val(), $('#areaId').val());
+        // });
+
+        // $("#areaId").keydown(function(e) {
+        //     if (event.keyCode == "13") {
+        //         showArea($('#cityId').val(), $('#areaId').val());
+        //     }
+        // })
+    });
+</script> -->

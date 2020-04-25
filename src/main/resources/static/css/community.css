@@ -1,0 +1,101 @@
+body{
+    font-family: 'Microsoft YaHei', sans-serif;
+}
+.navbar-default{
+    background-color: #fff;
+    border: none;
+    box-shadow: 0px 2px 2px 0px rgba(50,50,50,0.25);
+}
+.navbar-default .navbar-brand{
+    font-size: 24px;
+    font-weight: bold;
+    height: 70px;
+    line-height: 35px;
+}
+.navbar-default .navbar-nav>li>a{
+    font-size: 16px;
+    font-weight: bold;
+    height: 70px;
+    line-height: 35px;
+}
+
+
+#community{
+    margin-top: 70px;
+    font-weight: bold;
+}
+.page-header{
+    font-weight: bold;
+}
+.card-header01>h4{
+    font-weight: bold;
+}
+
+.card-header {
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(0,0,0,.03);
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
+.card-body {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1.25rem;
+}
+/* 图形 */
+.chat{
+    width: 563px;
+    height: 381px;
+}
+
+/* 地图 */
+#map h4{
+    font-weight: bold;
+    /* margin-top: 1em; */
+}
+#allmap{
+    border: black;
+    height: 500px;
+    width: 100%;
+    overflow: hidden;
+    margin-top:1em;
+}
+.btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+/* 小区租房 */
+.rent{
+    height: 300px;
+    display: block;
+    padding: 4px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    max-width: 310px;
+    margin-bottom: 30px;
+    
+    text-align: center;
+    font-weight: bold;
+}
+.rent img{
+    width: 100%;
+    height: 50%;
+    vertical-align: middle;
+}
+.rent p{
+    font-style:normal;
+    font-family: 'Microsoft YaHei', sans-serif;
+    font-weight: bold;
+}
+#rent_header{
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    /* padding: 0; */
+    padding-left: -2rem; 
+    font-weight: bold;
+    background-color: rgba(0,0,0,.03);
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
