@@ -2,10 +2,9 @@ package com.bootzufang.controller;
 
 import com.bootzufang.mapper.LianJiaMapper;
 import com.bootzufang.mapper.TongChengMapper;
-import com.bootzufang.pojo.LianjiaInfo;
-import com.bootzufang.pojo.LianjiaRentInfo;
-import com.bootzufang.pojo.RegionalNum;
-import com.bootzufang.pojo.TongchengInfo;
+import com.bootzufang.pojo.*;
+import com.bootzufang.service.LianjiaRentSortService;
+import com.bootzufang.service.impl.LianjiaRentSortServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +22,8 @@ public class Convert {
     private LianJiaMapper lianJiaMapper;
     @Autowired
     private TongChengMapper tongChengMapper;
+    @Autowired
+    private LianjiaRentSortServiceImpl lianjiaRentSortService;
 
     @RequestMapping("/")
     public String indexPage(Model model){
@@ -47,15 +48,8 @@ public class Convert {
     @ResponseBody
     public String test1(){
         System.out.println("==--------------------------------");
-        long startTime=System.currentTimeMillis();   //获取开始时间
+        lianjiaRentSortService.getLianjiaRentInfo();
 
-        List<LianjiaRentInfo> lianjiaRentInfo = new ArrayList<>(40000);
-        lianjiaRentInfo = lianJiaMapper.getLianjiaRentInfo();
-
-        long endTime=System.currentTimeMillis(); //获取结束时间
-        System.out.println(lianjiaRentInfo.size());
-        System.out.println("程序运行时间： "+(endTime-startTime)+"ms");
-
-        return null;
+        return "aaa";
     }
 }

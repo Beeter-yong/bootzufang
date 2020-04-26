@@ -2,6 +2,7 @@ package com.bootzufang.mapper;
 
 import com.bootzufang.pojo.LianjiaInfo;
 import com.bootzufang.pojo.LianjiaRentInfo;
+import com.bootzufang.pojo.LianjiaRentSimpleInfo;
 import com.bootzufang.pojo.RegionalNum;
 import org.apache.ibatis.annotations.Select;
 
@@ -18,7 +19,7 @@ public interface LianJiaMapper {
     List<LianjiaInfo> getlianjiaAutoInfo();
 
     //取出链家所有租房房源数据
-    @Select("SELECT * FROM lianjiaRentInfo")
-    List<LianjiaRentInfo> getLianjiaRentInfo();
+    @Select("SELECT id, price, area, community FROM lianjiaRentInfo")
+    List<LianjiaRentSimpleInfo> getLianjiaRentInfo();
 
 }
