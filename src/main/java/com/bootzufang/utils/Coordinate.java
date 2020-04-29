@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -17,7 +16,7 @@ import java.util.Map;
  */
 public class Coordinate {
 
-    public Map<String, BigDecimal> getLatAndLngByAddress(String addr){
+    public Map<String, Float> getLatAndLngByAddress(String addr){
         String address = "";
         String lat = "";
         String lng = "";
@@ -53,11 +52,11 @@ public class Coordinate {
                 insr.close();
             }
         } catch (IOException e) {
-
+            System.out.println("坐标获取出错");
         }
-        Map<String, BigDecimal> map = new HashMap<String, BigDecimal>();
-        map.put("lat", new BigDecimal(lat));
-        map.put("lng", new BigDecimal(lng));
+        Map<String, Float> map = new HashMap<String, Float>();
+        map.put("lat", new Float(lat));
+        map.put("lng", new Float(lng));
         return map;
     }
 

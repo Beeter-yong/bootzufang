@@ -14,10 +14,10 @@ import java.net.URLConnection;
  */
 public class GetDistance {
 
-    public static Long getDistance(String startLonLat, String endLonLat, String select){
+    public static Double getDistance(String startLonLat, String endLonLat, String select){
 //    public static Long getDistance(){
         //返回起始地startAddr与目的地endAddr之间的距离，单位：米
-        Long result = 0L;
+        Double result = 0d;
         String queryUrl;
         switch (select){
             case "0"://驾车路线
@@ -44,8 +44,7 @@ public class GetDistance {
         if(obj==null){
             return result;
         }
-        result = Long.parseLong(obj.toString());
-        System.out.println("result=   "+result);
+        result = Double.parseDouble(obj.toString());
         return result;
     }
 

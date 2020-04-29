@@ -22,14 +22,12 @@ public class LianjiaRentSortServiceImpl implements LianjiaRentSortService {
     @Override
     public List<LianjiaRentSimpleInfo> getLianjiaRentInfo() {
         long startTime=System.currentTimeMillis();   //获取开始时间
-
         List<LianjiaRentSimpleInfo> lianjiaRentInfo = new ArrayList<>(40000);
         lianjiaRentInfo = lianJiaMapper.getLianjiaRentInfo();
-
         long endTime=System.currentTimeMillis(); //获取结束时间
-        System.out.println(lianjiaRentInfo.size());
         System.out.println("程序运行时间： "+(endTime-startTime)+"ms");
-        return null;
+
+        return lianjiaRentInfo;
     }
 
 }

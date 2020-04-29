@@ -5,6 +5,7 @@ import com.bootzufang.mapper.TongChengMapper;
 import com.bootzufang.pojo.*;
 import com.bootzufang.service.LianjiaRentSortService;
 import com.bootzufang.service.impl.LianjiaRentSortServiceImpl;
+import com.bootzufang.utils.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,8 +48,9 @@ public class Convert {
     @RequestMapping("/test")
     @ResponseBody
     public String test1(){
-        System.out.println("==--------------------------------");
-        lianjiaRentSortService.getLianjiaRentInfo();
+        List<LianjiaRentSimpleInfo> lists = lianjiaRentSortService.getLianjiaRentInfo();
+        Sort s = new Sort();
+        s.sort(lists);
 
         return "aaa";
     }

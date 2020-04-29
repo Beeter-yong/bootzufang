@@ -6,7 +6,7 @@ public class LianjiaRentSimpleInfo {
     private Integer id;
     private String price;
     private String area;
-    private String community;
+    private String address;
 
     @Override
     public String toString() {
@@ -14,7 +14,7 @@ public class LianjiaRentSimpleInfo {
                 "id=" + id +
                 ", price='" + price + '\'' +
                 ", area='" + area + '\'' +
-                ", community='" + community + '\'' +
+                ", address='" + address + '\'' +
                 '}';
     }
 
@@ -45,12 +45,12 @@ public class LianjiaRentSimpleInfo {
         return this;
     }
 
-    public String getCommunity() {
-        return community;
+    public String getAddress() {
+        return address;
     }
 
-    public LianjiaRentSimpleInfo setCommunity(String community) {
-        this.community = community;
+    public LianjiaRentSimpleInfo setAddress(String address) {
+        this.address = address;
         return this;
     }
 }
