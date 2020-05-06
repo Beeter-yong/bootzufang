@@ -31,6 +31,7 @@ public class Sort {
         Double max_distance = 0d;
         Matrix matrix;
         //指标正向化
+        /*
         //求最对大绝对值
         for (int i = 0; i < matrixList.size(); i++){
             matrix = matrixList.get(i);
@@ -44,11 +45,8 @@ public class Sort {
                 max_distance = Math.abs(matrix.getDistance() - distance_best);
             }
         }
-        System.out.println("max_price=" +max_price);
-        System.out.println("max_area=" +max_area);
-        System.out.println("max_distance=" +max_distance);
         //中间型转化为极大型
-        List<Matrix> matrixListProcess = new ArrayList<>(40000);
+        List<Matrix> matrixListProcess = new ArrayList<>(5000);
         for (int i = 0; i < matrixList.size(); i++){
             matrix = matrixList.get(i);
             //处理价格
@@ -63,10 +61,29 @@ public class Sort {
             matrixListProcess.add(matrix);
         }
         matrixList = null;
+        */
+
+        //价格采用极小型,面积是极大型，距离是极小型
+        for(int i = 0; i < matrixList.size(); i++){
+            matrix = matrixList.get(i);
+            if(matrix.getPrice() > max_price){
+                max_price = matrix.getPrice();
+            }
+            if(matrix.getDistance() > max_distance){
+                max_distance = matrix.getDistance();
+            }
+        }
+        List<Matrix> matrixListProcess = new ArrayList<>(5000);
+        for (int i = 0; i < matrixList.size(); i++){
+            matrix = matrixList.get(i);
+            matrix.setPrice(max_price - matrix.getPrice());
+            matrix.setDistance(max_distance - matrix.getDistance());
+            matrixListProcess.add(matrix);
+        }
         System.out.println("正向化后："+matrixListProcess.size() +matrixListProcess);
 
         //标准化处理
-        List<Matrix> matrixListBiaoZhun = new ArrayList<>(40000);
+        List<Matrix> matrixListBiaoZhun = new ArrayList<>(5000);
         double sum_price = 0;
         double sum_area = 0;
         double sum_distance = 0;
@@ -87,6 +104,12 @@ public class Sort {
             matrixListBiaoZhun.add(matrix);
         }
         System.out.println("标准化："+ matrixListBiaoZhun);
+        //求权重-熵权法
+        Map<String, Double> map = getWeight(matrixListBiaoZhun);
+        Double wPrice = map.get("WPrice");
+        Double wArea = map.get("WArea");
+        Double wDistance = map.get("WDistance");
+
         //多指标评分
         Double zPriceMax = 0d;
         Double zAreaMax = 0d;
@@ -115,14 +138,15 @@ public class Sort {
                 zDistanceMin = matrix.getDistance();
             }
         }
+
        //计算评分存入结果集中
-        List<SortResult> sortResults = new ArrayList<>(40000);
+        List<SortResult> sortResults = new ArrayList<>(5000);
 
         for (int i = 0; i < matrixListBiaoZhun.size(); i++){
             matrix = matrixListBiaoZhun.get(i);
-            Double DMax = Math.pow((zPriceMax - matrix.getPrice()), 2) + Math.pow((zAreaMax - matrix.getArea()), 2) + Math.pow((zDistanceMax - matrix.getDistance()), 2);
+            Double DMax = wPrice * Math.pow((zPriceMax - matrix.getPrice()), 2) + wArea * Math.pow((zAreaMax - matrix.getArea()), 2) + wDistance * Math.pow((zDistanceMax - matrix.getDistance()), 2);
             DMax = Math.pow(DMax, 0.5);
-            Double DMin = Math.pow((zPriceMin - matrix.getPrice()), 2) + Math.pow((zAreaMin - matrix.getArea()), 2) + Math.pow((zDistanceMin - matrix.getDistance()), 2);
+            Double DMin = wPrice * Math.pow((zPriceMin - matrix.getPrice()), 2) + wArea * Math.pow((zAreaMin - matrix.getArea()), 2) + wDistance * Math.pow((zDistanceMin - matrix.getDistance()), 2);
             DMin = Math.pow(DMin, 0.5);
 
             SortResult sortResult = new SortResult();
@@ -146,13 +170,56 @@ public class Sort {
     }
 
     /**
+     * 熵权法求权重
+     */
+    private Map<String, Double> getWeight(List<Matrix> list){
+        //求出各个指标的和
+        Double sum_price = 0d;
+        Double sum_area = 0d;
+        Double sum_distance = 0d;
+        for (int i = 0; i < list.size(); i++){
+            sum_price = sum_price + list.get(i).getPrice();
+            sum_area = sum_area + list.get(i).getArea();
+            sum_distance = sum_distance + list.get(i).getDistance();
+        }
+        Double e_price = 0d;
+        Double e_area = 0d;
+        Double e_distance = 0d;
+        for(int i = 0; i < list.size(); i++){
+            //各指标项所占比重
+            Double p_price = list.get(i).getPrice() / sum_price;
+            Double p_area = list.get(i).getArea() / sum_area;
+            Double p_distance = list.get(i).getDistance() / sum_distance;
+            //计算熵值第一步
+            if(p_price != 0d && p_area != 0d && p_distance != 0d) {
+                e_price = e_price + p_price * Math.log(p_price);
+                e_area = e_area + p_area * Math.log(p_area);
+                e_distance = e_distance + p_distance * Math.log(p_distance);
+            }
+        }
+        //计算计算信息熵冗余度
+        Double d_price = 1 + (1 / Math.log(list.size()) * e_price);
+        Double d_area = 1 + (1 / Math.log(list.size()) * e_area);
+        Double d_distance = 1 + (1 / Math.log(list.size()) * e_distance);
+        Double w_sum = d_price + d_area + d_distance;
+        Double w_price = d_price / w_sum;
+        Double w_area = d_area / w_sum;
+        Double w_distance = d_distance / w_sum;
+
+        Map<String, Double> map = new HashMap();
+        map.put("WPrice", w_price);
+        map.put("WArea", w_area);
+        map.put("WDistance", w_distance);
+        return map;
+    }
+    /**
      * 将所有小区的地理位置转化为坐标
      * 求出与目标点之间的距离
      */
     private List<Matrix> getConvert(List<LianjiaRentSimpleInfo> list){  //需要更改函数传入目标地址
         Coordinate coordinate = new Coordinate();
         GetDistance Distance = new GetDistance();
-        List<Matrix> matrixList = new ArrayList<Matrix>(40000);
+        List<Matrix> matrixList = new ArrayList<Matrix>(5000);
         Map<String, Double> distanceMap = new HashMap<>(5000);
 
         for(int i = 0; i < list.size(); i++){
