@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,17 +9,17 @@
     <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
     <![endif]-->
-    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../static/css/recommendResult.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/recommendResult.css" rel="stylesheet">
 
-    <script src="../static/js/jquery.js"></script>
-    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
     <!-- 引用echarts -->
-    <script src="../static/js/echarts.min.js"></script>
+    <script src="js/echarts.min.js"></script>
     <!-- 引用地图 -->
     <script type="text/javascript"
         src="http://api.map.baidu.com/api?v=2.0&ak=s5bz9CS1bjgcbhte4MZ36VFwxeStTuz9"></script>
-    <script src="../static/js/community.js"></script>
+    <script src="js/community.js"></script>
 
     <title>聚合网站</title>
 </head>
@@ -33,13 +34,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="index.html" class="navbar-brand">聚合租房</a>
+                <a href="/" class="navbar-brand">聚合租房</a>
             </div>
 
             <!-- 导航 -->
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#home">首页</a></li>
+                    <li><a href="/">首页</a></li>
                     <li><a href="index.html">搜索小区</a></li>
                     <li><a href="index.html">搜索房源</a></li>
                     <li><a href="index.html">推荐房源</a></li>
@@ -62,41 +63,78 @@
         </div>
     </div>
     <!-- 推荐结果详情 -->
+    <section id="project" class="container">
+        <div class="container projects">
+            <div class="projects-header page-header">
+                <h2>相关推荐结果</h2>
+                <p>---------------------------</p>
+            </div>
+        </div>
+        <div class="row">
+            <!--循环产生32个推荐模块-->
+            <div class="col-sm-6 col-md-4 col-lg-3 " th:each="lianjiaRentInfo:${lianjiaRentInfos}">
+                <div class="community">
+                    <div class="caption">
+                        <h3>
+                            <a th:href="@{${lianjiaRentInfo.houseUrl}}" title="房源详情" target="_blank" >
+                                <span th:text="${lianjiaRentInfo.community}"></span>
+                            </a>
+                        </h3>
+                        <p>
+                            <span th:text="${lianjiaRentInfo.price}"></span><br/>
+                            <span th:text="${lianjiaRentInfo.houseType}"></span><br/>
+                            <span th:text="${lianjiaRentInfo.area}"></span><br/>
+                            <span th:text="${lianjiaRentInfo.towards}"></span><br/>
+                            <span th:text="${lianjiaRentInfo.floor}"></span><br/>
+                            <span th:text="${lianjiaRentInfo.address}"></span><br/>
+                        </p>
+                    </div>
+                </div>
+            </div>
+         </div>
+    </section>
     
 
 
 </body>
 <!-- 地图数据 -->
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
     var map = new BMap.Map("allmap");
-    var point = "石园";
+    var point = "北京";
     map.centerAndZoom(point, 15);
     // 添加地图类型控件
-	map.addControl(new BMap.MapTypeControl({
-		mapTypes:[
+    map.addControl(new BMap.MapTypeControl({
+        mapTypes:[
             BMAP_NORMAL_MAP,
             BMAP_HYBRID_MAP
-        ]}));	
+        ]}));
     var stCtrl = new BMap.PanoramaControl(); //构造全景控件
-	stCtrl.setOffset(new BMap.Size(20, 40));
-	map.addControl(stCtrl);//添加全景控件
-	map.setCurrentCity("北京");          // 设置地图显示的城市 此项是必须设置的
-	map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
-    
-    // 创建地址解析器实例
-	var myGeo = new BMap.Geocoder();
-	// 将地址解析结果显示在地图上,并调整地图视野  
-	myGeo.getPoint(point, function(point){
-		if (point) {
-            map.centerAndZoom(point, 15);
-            var marker = new BMap.Marker(point)
-            marker.setAnimation(BMAP_ANIMATION_BOUNCE);
-			map.addOverlay(marker);
-		}else{
-			alert("您选择地址没有解析到结果!");
-		}
-	}, "北京市"); 
-    
-    
+    stCtrl.setOffset(new BMap.Size(20, 40));
+    map.addControl(stCtrl);//添加全景控件
+    map.setCurrentCity("北京");          // 设置地图显示的城市 此项是必须设置的
+    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+
+
+    //获取后端推荐数据
+    var recommendHose = [[${lianjiaRentInfos}]]
+    for (var i = 0; i < recommendHose.length; i++){
+        point = recommendHose[i].address;
+
+        // 创建地址解析器实例
+        var myGeo = new BMap.Geocoder();
+        // 将地址解析结果显示在地图上,并调整地图视野
+        myGeo.getPoint(point, function(point){
+            if (point) {
+                map.centerAndZoom(point, 15);
+                var marker = new BMap.Marker(point)
+                marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+                map.addOverlay(marker);
+            }else{
+                alert("您选择地址没有解析到结果!");
+            }
+        }, "北京市");
+
+    }
+
 </script>
 </html>
