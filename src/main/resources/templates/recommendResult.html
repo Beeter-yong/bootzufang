@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/css/recommendResult.css" rel="stylesheet">
+
+    <script src="../static/js/jquery.js"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+    <!-- 引用echarts -->
+    <script src="../static/js/echarts.min.js"></script>
+    <!-- 引用地图 -->
+    <script type="text/javascript"
+        src="http://api.map.baidu.com/api?v=2.0&ak=s5bz9CS1bjgcbhte4MZ36VFwxeStTuz9"></script>
+    <script src="../static/js/community.js"></script>
+
+    <title>聚合网站</title>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- 小屏幕导航按钮和logo -->
+            <div class="navbar-header">
+                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="index.html" class="navbar-brand">聚合租房</a>
+            </div>
+
+            <!-- 导航 -->
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="index.html">搜索小区</a></li>
+                    <li><a href="index.html">搜索房源</a></li>
+                    <li><a href="index.html">推荐房源</a></li>
+                    <li><a href="#contact">反馈</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 推荐结果地图展示 -->
+    <div id="recommendResultMap" class="container">
+        <!-- 地图 -->
+        <div id="map" class="row">
+            <div class="col-sm-12 col-md-12">
+                <h2 class="page-header">推荐房源地图展示</h2>
+            </div>
+            <div class="col-md-12">
+                <div id="allmap"></div>
+            </div>
+        </div>
+    </div>
+    <!-- 推荐结果详情 -->
+    
+
+
+</body>
+<!-- 地图数据 -->
+<script type="text/javascript">
+    var map = new BMap.Map("allmap");
+    var point = "石园";
+    map.centerAndZoom(point, 15);
+    // 添加地图类型控件
+	map.addControl(new BMap.MapTypeControl({
+		mapTypes:[
+            BMAP_NORMAL_MAP,
+            BMAP_HYBRID_MAP
+        ]}));	
+    var stCtrl = new BMap.PanoramaControl(); //构造全景控件
+	stCtrl.setOffset(new BMap.Size(20, 40));
+	map.addControl(stCtrl);//添加全景控件
+	map.setCurrentCity("北京");          // 设置地图显示的城市 此项是必须设置的
+	map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+    
+    // 创建地址解析器实例
+	var myGeo = new BMap.Geocoder();
+	// 将地址解析结果显示在地图上,并调整地图视野  
+	myGeo.getPoint(point, function(point){
+		if (point) {
+            map.centerAndZoom(point, 15);
+            var marker = new BMap.Marker(point)
+            marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+			map.addOverlay(marker);
+		}else{
+			alert("您选择地址没有解析到结果!");
+		}
+	}, "北京市"); 
+    
+    
+</script>
+</html>

@@ -1,0 +1,73 @@
+body{
+    font-family: 'Microsoft YaHei', sans-serif;
+}
+.navbar-default{
+    background-color: #fff;
+    border: none;
+    box-shadow: 0px 2px 8px 0px rgba(50,50,50,0.25);
+}
+.navbar-default .navbar-brand{
+    font-size: 24px;
+    font-weight: bold;
+    height: 70px;
+    line-height: 35px;
+}
+.navbar-default .navbar-nav>li>a{
+    font-size: 16px;
+    font-weight: bold;
+    height: 70px;
+    line-height: 35px;
+}
+
+/* 中间 */
+#recommend{
+    margin-top: 70px;
+    font-weight: bold;
+}
+.page-header{
+    font-weight: bold;
+}
+.card-header {
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(0,0,0,.03);
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
+/* 图形 */
+.chat{
+    width: 1126px;
+    height: 381px;
+}
+
+/* 响应式布局 */
+@media screen and (max-width: 1140px) {
+    .chat {
+        width: 720px;
+        height: 381px;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .chat {
+        width: 300px;
+        height: 281px;
+    }
+}
+
+/* 推荐框信息 */
+/*#recommendInfo{*/
+    /*text-align: center;*/
+/*}*/
+.btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+/* 地图 */
+#allmap{
+    border: black;
+    height: 500px;
+    width: 100%;
+    overflow: hidden;
+    margin-top:1em;
+}

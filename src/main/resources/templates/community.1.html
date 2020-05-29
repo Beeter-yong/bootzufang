@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -11,17 +10,17 @@
     <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
     <![endif]-->
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/community.css" rel="stylesheet">
+    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/css/community.css" rel="stylesheet">
 
-    <script src="js/jquery.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="../static/js/jquery.js"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
     <!-- 引用echarts -->
-    <script src="js/echarts.min.js"></script>
+    <script src="../static/js/echarts.min.js"></script>
     <!-- 引用地图 -->
     <script type="text/javascript"
         src="http://api.map.baidu.com/api?v=2.0&ak=s5bz9CS1bjgcbhte4MZ36VFwxeStTuz9"></script>
-    <script src="js/community.js"></script>
+    <script src="../static/js/community.js"></script>
 
     <title>小区详情</title>
 </head>
@@ -148,7 +147,7 @@
                             <div class="card-header">
                                 <i class="glyphicon glyphicon-signal"></i> 各网站布局的数量
                             </div>
-                            <div class="card-body row" id="chart-homeEveryNum">
+                            <div class="card-body row" id="chart-unitprice">
                                 <div class="chat col-md-12 col-sm-12" id="homeEveryNum"></div>
                             </div>
                         </div>
@@ -158,7 +157,7 @@
                             <div class="card-header">
                                 <i class="glyphicon glyphicon-signal"></i> 各网站结构布局的均价
                             </div>
-                            <div class="card-body row" id="chart-homeEveryPrice">
+                            <div class="card-body row" id="chart-unitprice">
                                 <div class="chat col-md-12 col-sm-12" id="homeEveryPrice"></div>
                             </div>
                         </div>
@@ -168,7 +167,7 @@
                             <div class="card-header">
                                 <i class="glyphicon glyphicon-cd"></i> 小区布局结构数量
                             </div>
-                            <div class="card-body row" id="chart-homeNum">
+                            <div class="card-body row" id="chart-detail">
                                 <div class="chat col-md-12 col-sm-12" id="homeNum"></div>
                             </div>
                         </div>
@@ -178,7 +177,7 @@
                             <div class="card-header">
                                 <i class="glyphicon glyphicon-cd"></i> 小区布局结构均价
                             </div>
-                            <div class="card-body row" id="chart-homePrice">
+                            <div class="card-body row" id="chart-detail">
                                 <div class="chat col-md-12 col-sm-12" id="homePrice"></div>
                             </div>
                         </div>

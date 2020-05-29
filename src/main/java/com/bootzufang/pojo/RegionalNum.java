@@ -1,6 +1,6 @@
 package com.bootzufang.pojo;
 
-public class RegionalNum {
+public class  RegionalNum {
     private String regional;
     private Integer num;
 

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/recommend.css" rel="stylesheet">
+
+    <script src="js/jquery.js"></script>
+    <!--引入bootstrap-->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <!-- 引用echarts -->
+    <script src="js/echarts.min.js"></script>
+    <!-- 引用地图 -->
+    <script type="text/javascript"
+        src="http://api.map.baidu.com/api?v=2.0&ak=s5bz9CS1bjgcbhte4MZ36VFwxeStTuz9">
+    </script>
+
+
+    <title>聚合租房网</title>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- 小屏幕导航按钮和logo -->
+            <div class="navbar-header">
+                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="index.html" class="navbar-brand">聚合租房</a>
+            </div>
+
+            <!-- 导航 -->
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="index.html">搜索小区</a></li>
+                    <li><a href="index.html">搜索房源</a></li>
+                    <li><a href="index.html">推荐房源</a></li>
+                    <li><a href="#contact">反馈</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- 中间 -->
+    <div id="recommend" class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h4 class="page-header">推荐房源</h4>
+                <div id="recommendInfo">
+                    <form action="/recommendResult" class="form-inline">
+                        <div class="form-group">
+                            <label class="control-label" for="exampleInputEmail3">你的公司地址：</label>
+                            <input type="text" class="form-control" id="exampleInputEmail3" name="address" placeholder="公司地址">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">房屋结构：</label>
+                            <select class="form-control" name="homType">
+                                <div th:each="lianjiaHomeTypelist : ${lianjiaHomeTypelists}">
+                                    <div th:if="${lianjiaHomeTypelist.getNum()} gt 100">
+                                        <option th:text="${lianjiaHomeTypelist.getName()}"></option>
+                                    </div>
+                                </div>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">行程方式：</label>
+                            <select class="form-control" name="tripType">
+                                <option value="0">驾车</option>
+                                <option value="1">骑行</option>
+                                <option value="2">步行</option>
+                                <option value="3">公交</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">朝向：</label>
+                            <label class="radio-inline">
+                                <input type="radio" name="direction" id="inlineRadio1" value="东"> 东
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="direction" id="inlineRadio2" value="南"> 南
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="direction" id="inlineRadio3" value="西"> 西
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="direction" id="inlineRadio4" value="北"> 北
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-info" style="float:right;">推荐</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h4 class="page-header">相关数据</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="glyphicon glyphicon-signal"></i> 房屋结构
+                    </div>
+                    <div class="card-body row" id="chart-homeType">
+                        <div class="chat col-md-12 col-sm-12" id="homeType"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <h4 class="page-header">北京地图</h4>
+            <div class="col-md-12">
+                <div id="allmap"></div>
+            </div>
+        </div>
+    </div>
+    <!-- 尾部 -->
+    <footer>
+        <div style="text-align: center">
+            感谢您的使用
+        </div>
+    </footer>
+</body>
+<!-- 各网站布局的数量 -->
+<script type="text/javascript" th:inline="javascript">
+    var myChart = echarts.init(document.getElementById('homeType'));
+    //处理后端获取的数据
+    var dataAxis = [];
+    var lianjiadata = [];
+    var tongchengdata = [];
+
+    var lianjiaHomeTypelists = [[${lianjiaHomeTypelists}]];
+    for (var i = 0; i < lianjiaHomeTypelists.length; i++){
+        if(lianjiaHomeTypelists[i].num > 100){
+            dataAxis[dataAxis.length] = lianjiaHomeTypelists[i].name;
+            lianjiadata[lianjiadata.length] = lianjiaHomeTypelists[i].num;
+
+        }
+    }
+
+    var yMax = 500;
+    var dataShadow = [];
+
+    for (var i = 0; i < tongchengdata.length; i++) {
+        dataShadow.push(yMax);
+    }
+
+    option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        grid: {
+            left: '1%',
+            right: '1%',
+            bottom: '1%',
+            top: '8%',
+            containLabel: true
+        },
+        legend: {},
+        xAxis: {
+            data: dataAxis,
+            axisLabel: {
+                textStyle: {
+                    color: '#000'
+                }
+            },
+            axisTick: {
+                show: false
+            },
+            axisLine: {
+                show: false
+            },
+            z: -100
+        },
+        yAxis: {
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                textStyle: {
+                    color: '#999'
+                }
+            }
+        },
+        dataZoom: [
+            {
+                type: 'inside'
+            }
+        ],
+        series: [
+            { // For shadow
+                // name: '链家',
+                type: 'bar',
+                itemStyle: {
+                    color: 'rgba(0,0,0,0.05)'
+                },
+                barGap: '10%',
+                barCategoryGap: '1%',
+                data: dataShadow,
+                animation: false
+            },
+            {
+                name: '链家',
+                type: 'bar',
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(
+                        0, 0, 0, 1,
+                        [
+                            {offset: 0, color: '#83bff6'},
+                            {offset: 0.5, color: '#188df0'},
+                            {offset: 1, color: '#188df0'}
+                        ]
+                    )
+                },
+                emphasis: {
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(
+                            0, 0, 0, 1,
+                            [
+                                {offset: 0, color: '#2378f7'},
+                                {offset: 0.7, color: '#2378f7'},
+                                {offset: 1, color: '#83bff6'}
+                            ]
+                        )
+                    }
+                },
+                data: lianjiadata
+            },
+            {
+                name: '58同城',
+                type: 'bar',
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(
+                        0, 0, 0, 2,
+                        [
+                            {offset: 0, color: '#0575E6'},
+                            // {offset: 0.5, color: '#188df0'},
+                            {offset: 1, color: '#021B79'}
+                        ]
+                    )
+                },
+                emphasis: {
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(
+                            0, 0, 0, 1,
+                            [
+                                {offset: 0, color: '#2378f7'},
+                                {offset: 0.7, color: '#2378f7'},
+                                {offset: 1, color: '#83bff6'}
+                            ]
+                        )
+                    }
+                },
+                data: tongchengdata
+            }
+        ]
+    };
+
+    // Enable data zoom when user click bar.
+    var zoomSize = 6;
+    myChart.on('click', function (params) {
+        console.log(dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)]);
+        myChart.dispatchAction({
+            type: 'dataZoom',
+            startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
+            endValue: dataAxis[Math.min(params.dataIndex + zoomSize / 2, data.length - 1)]
+        });
+    });
+    myChart.setOption(option);
+
+    $(window).resize(function() {
+        setTimeout(function(){
+            myChart.resize();
+        },100)
+    });
+    // window.addEventListener("resize", function(){
+    //     myChart.resize();
+    // });
+
+</script>
+<!--地图控件-->
+<script type="text/javascript">
+    var map = new BMap.Map("allmap");
+    map.centerAndZoom(new BMap.Point(116.404, 39.915), 13);
+    // 添加地图类型控件
+	map.addControl(new BMap.MapTypeControl({
+		mapTypes:[
+            BMAP_NORMAL_MAP,
+            BMAP_HYBRID_MAP
+        ]}));	
+    var stCtrl = new BMap.PanoramaControl(); //构造全景控件
+	stCtrl.setOffset(new BMap.Size(20, 40));
+	map.addControl(stCtrl);//添加全景控件
+	map.setCurrentCity("北京");          // 设置地图显示的城市 此项是必须设置的
+	map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+    
+</script>
+</html>

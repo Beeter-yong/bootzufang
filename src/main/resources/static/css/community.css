@@ -99,3 +99,18 @@ body{
     background-color: rgba(0,0,0,.03);
     border-bottom: 1px solid rgba(0,0,0,.125);
 }
+
+/* 响应式布局 */
+@media screen and (max-width: 1140px) {
+    .chat {
+        width: 720px;
+        height: 381px;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .chat {
+        width: 450px;
+        height: 381px;
+    }
+}

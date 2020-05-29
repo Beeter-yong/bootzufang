@@ -11,18 +11,19 @@ import java.util.*;
  */
 public class Sort {
 
-    public void sort(List<LianjiaRentSimpleInfo> list){
+    public List<SortResult> sort(List<LianjiaRentSimpleInfo> list, String endLonLat, String select){
         long startTime=System.currentTimeMillis();   //获取开始时间
-        List<Matrix> matrixList = getConvert(list);
-        sortTopsis(matrixList);
+        List<Matrix> matrixList = getConvert(list, endLonLat, select);
+        List<SortResult> sortResults = sortTopsis(matrixList);
         long endTime=System.currentTimeMillis(); //获取结束时间
         System.out.println("程序运行时间： "+(endTime-startTime)+"ms");
+        return sortResults;
     }
 
     /**
      * 使用TOPSIS对矩阵进行排序
      */
-    private void sortTopsis(List<Matrix> matrixList){   //需要传参用户的理性数据
+    private List<SortResult> sortTopsis(List<Matrix> matrixList){   //需要传参用户的理性数据
         Double price_best = 3000d;
         Double area_best = 50d;
         Double distance_best = 4000d;
@@ -144,7 +145,10 @@ public class Sort {
 
         for (int i = 0; i < matrixListBiaoZhun.size(); i++){
             matrix = matrixListBiaoZhun.get(i);
-            Double DMax = wPrice * Math.pow((zPriceMax - matrix.getPrice()), 2) + wArea * Math.pow((zAreaMax - matrix.getArea()), 2) + wDistance * Math.pow((zDistanceMax - matrix.getDistance()), 2);
+            Double DMax = wPrice * Math.pow((zPriceMax - matrix.getPrice()), 2) + wArea * Math.pow((zAreaMax - matrix.getArea()), 2)
+
+
+                    + wDistance * Math.pow((zDistanceMax - matrix.getDistance()), 2);
             DMax = Math.pow(DMax, 0.5);
             Double DMin = wPrice * Math.pow((zPriceMin - matrix.getPrice()), 2) + wArea * Math.pow((zAreaMin - matrix.getArea()), 2) + wDistance * Math.pow((zDistanceMin - matrix.getDistance()), 2);
             DMin = Math.pow(DMin, 0.5);
@@ -167,6 +171,7 @@ public class Sort {
         });
         System.out.println("排序后：" + sortResults);
 
+        return sortResults;
     }
 
     /**
@@ -216,7 +221,7 @@ public class Sort {
      * 将所有小区的地理位置转化为坐标
      * 求出与目标点之间的距离
      */
-    private List<Matrix> getConvert(List<LianjiaRentSimpleInfo> list){  //需要更改函数传入目标地址
+    private List<Matrix> getConvert(List<LianjiaRentSimpleInfo> list, String endLonLat, String select){  //需要更改函数传入目标地址
         Coordinate coordinate = new Coordinate();
         GetDistance Distance = new GetDistance();
         List<Matrix> matrixList = new ArrayList<Matrix>(5000);
@@ -233,8 +238,8 @@ public class Sort {
                 //如果已经查询过这个地址就不再请求网络查询，而是从哈希表中获取
                 Map<String, Float> map = coordinate.getLatAndLngByAddress("北京市"+list.get(i).getAddress());
                 String startLonLat = Float.toString(map.get("lat")) + "," + Float.toString(map.get("lng"));
-                String endLonLat = "39.915,116.404";
-                distance = Distance.getDistance(startLonLat, endLonLat, "1");
+//                String endLonLat = "39.915,116.404";
+                distance = Distance.getDistance(startLonLat, endLonLat, select);
                 distanceMap.put(list.get(i).getAddress(), distance);
             }else{
                 distance = distanceMap.get(list.get(i).getAddress());

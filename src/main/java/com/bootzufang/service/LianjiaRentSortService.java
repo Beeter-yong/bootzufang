@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface LianjiaRentSortService {
     //获取链家所有小区简化信息
-    List<LianjiaRentSimpleInfo> getLianjiaRentInfo();
+    List<LianjiaRentSimpleInfo> getLianjiaRentInfo(String homeType, String direction);
 
 }
