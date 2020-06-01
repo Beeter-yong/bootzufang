@@ -48,10 +48,30 @@ public class Convert {
         return "index";
     }
 
+    //社区详情展示
     @RequestMapping("/community")
-    public String communityPage(){
+    public String communityPage(HttpServletRequest request, Model model){
+        //1、获取社区对应id、名字
+        //2、根据id查询小区数据库，获取社区信息
+        LianjiaInfo lianjiaInfo = lianJiaMapper.getLianjiaInfo(Integer.parseInt(request.getParameter("id")));
+        //3、根据小区名字，查询租房数据库，查询小区中的房屋结构、以及对应数量和均价
+        String name = lianjiaInfo.getCommunityName();
+        //4、查询房源数据库，查找网站中房屋结构、以及对应数量和均价
+        List<StringNumNum> listHoseType = lianJiaMapper.getLianjiaStringNumPrice();
+        //5、根据小区名字查询房源数据库，查找小区中房屋结构、以及对应的数量和均价
+        List<StringNumNum> rentStringNumPrice = lianJiaMapper.getRentStringNumPrice(lianjiaInfo.getCommunityName());
+        //6、根据小区名字查找房源数据库，查找小区中所有房源信息
+        List<LianjiaRentInfo> rentByCommunity = lianJiaMapper.getRentByCommunity(lianjiaInfo.getCommunityName());
+
+        //7、传入model中
+        model.addAttribute("lianjiaInfo", lianjiaInfo); //小区信息
+        model.addAttribute("listHoseType", listHoseType);   //网站房屋结构以及均价和数量
+        model.addAttribute("rentStringNumPrice", rentStringNumPrice);   //一个小区内的房屋结构以及均价和数量
+        model.addAttribute("rentByCommunity", rentByCommunity);     //一个小区内的所有房源信息
+
         return "community";
     }
+    //推荐页面
     @RequestMapping("/recommend")
     public String recommendPage(Model model){
         List<StringNum> lianjiaHomeTypelists = lianJiaMapper.getlianjiaHomeTypeInfo();
@@ -59,6 +79,7 @@ public class Convert {
         return "recommend";
     }
 
+    //推荐结果
     @RequestMapping("/recommendResult")
     public String recommendResultPage(HttpServletRequest request, Model model){
         if(request.getParameter("address")=="" || request.getParameter("direction")==null){

@@ -7,6 +7,22 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 public interface LianJiaMapper {
+    //通过ID获取获取小区
+    @Select("SELECT * FROM lianjiaCommunityInfo WHERE id=#{id}")
+    LianjiaInfo getLianjiaInfo(@Param("id") Integer id);
+
+    //根据小区名字，获取租房数据库中所有小区的租房信息
+    @Select("SELECT * FROM lianjiaRentInfo WHERE  community=#{communityName}")
+    List<LianjiaRentInfo> getRentByCommunity(@Param("communityName") String communityName);
+
+    //根据小区名字，获取租房数据库中该小区的所有房屋结构以及数量和均价
+    @Select("SELECT houseType AS NAME, COUNT(houseType) AS num, AVG(price) AS price FROM lianjiaRentInfo WHERE  community=#{communityName} GROUP BY houseType")
+    List<StringNumNum> getRentStringNumPrice(@Param("communityName") String communityName);
+
+    //获取链家所有房源的房源结构以及对应的数量和均价
+    @Select("SELECT houseType AS NAME, COUNT(houseType) AS num, AVG(price) AS price FROM lianjiaRentInfo GROUP BY houseType HAVING COUNT(houseType) > 200")
+    List<StringNumNum> getLianjiaStringNumPrice();
+
     //通过ID获取链家房源信息
     @Select("SELECT * FROM lianjiaRentInfo WHERE id=#{id}")
     LianjiaRentInfo getLianjiaRent(@Param("id") int id);

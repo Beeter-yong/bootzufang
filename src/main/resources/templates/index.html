@@ -32,17 +32,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="index.html" class="navbar-brand">聚合租房</a>
+                <a href="/" class="navbar-brand">聚合租房</a>
             </div>
 
             <!-- 导航 -->
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#home">首页</a></li>
+                    <li><a href="/">首页</a></li>
                     <li><a href="index.html">搜索小区</a></li>
                     <li><a href="index.html">搜索房源</a></li>
-                    <li><a href="index.html">推荐房源</a></li>
-                    <li><a href="#contact">反馈</a></li>
+                    <li><a href="/recommend">推荐房源</a></li>
+                    <li><a href="/#contact">反馈</a></li>
                 </ul>
             </div>
         </div>
@@ -135,7 +135,7 @@
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 " th:each="lianjiaAutoInfo:${lianjiaAutoInfos}">
                 <div class="community">
-                    <a href="#" title="小区详情" target="_blank">
+                    <a th:href="${'/community?id=' + lianjiaAutoInfo.id}" title="小区详情" target="_blank">
                         <img src="images/lianjiaLog.jpg" th:data-src="${#strings.replace(lianjiaAutoInfo.communityImg,'710x400','232x174')}" alt="图片链接">
                     </a>
                     <div class="caption">

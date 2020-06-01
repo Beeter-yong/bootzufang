@@ -37,17 +37,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="index.html" class="navbar-brand">聚合租房</a>
+                <a href="/" class="navbar-brand">聚合租房</a>
             </div>
 
             <!-- 导航 -->
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#home">首页</a></li>
+                    <li><a href="/">首页</a></li>
                     <li><a href="index.html">搜索小区</a></li>
                     <li><a href="index.html">搜索房源</a></li>
-                    <li><a href="index.html">推荐房源</a></li>
-                    <li><a href="#contact">反馈</a></li>
+                    <li><a href="/recommend">推荐房源</a></li>
+                    <li><a href="/#contact">反馈</a></li>
                 </ul>
             </div>
         </div>
@@ -78,51 +78,51 @@
                                         <tbody>
                                             <tr>
                                                 <td style="width: 30%">小区名:</td>
-                                                <td id="title">中国河北省邯郸市魏县牙里镇万达广场</td>
+                                                <td id="title" th:text="${lianjiaInfo.getCommunityName()}">中国河北省邯郸市魏县牙里镇万达广场</td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 30%">参考均价:</td>
-                                                <td id="price"></td>
+                                                <td id="price" ></td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 30%">建造时间:</td>
-                                                <td id="year"></td>
+                                                <td id="year" th:text="${lianjiaInfo.getBuildingTime()}"></td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 30%">建筑类型:</td>
-                                                <td id="housetype"></td>
+                                                <td id="housetype" th:text="${lianjiaInfo.getBuildingType()}"></td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 30%">物业公司:</td>
-                                                <td id="service"></td>
+                                                <td id="service" th:text="${lianjiaInfo.getPropertyName()}"></td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 30%">开发商:</td>
-                                                <td id="company"></td>
+                                                <td id="company" th:text="${lianjiaInfo.getDeveloper()}"></td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 30%">楼栋总数:</td>
-                                                <td id="building_num"></td>
+                                                <td id="building_num" th:text="${lianjiaInfo.getBuildingNum()}"></td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 30%">房屋总数:</td>
-                                                <td id="house_num"></td>
+                                                <td id="house_num" th:text="${lianjiaInfo.getHouseingNum()}"></td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 30%">在租房源:</td>
-                                                <td id="onrent"></td>
+                                                <td id="onrent" ></td>
                                             </tr>
                                             <tr>
                                                 <td>物业费:</td>
-                                                <td id="cost"></td>
+                                                <td id="cost" th:text="${lianjiaInfo.getPropertyFees()}"></td>
                                             </tr>
                                             <tr>
                                                 <td>行政区:</td>
-                                                <td id="district"></td>
+                                                <td id="district" th:text="${lianjiaInfo.getRegional()}"></td>
                                             </tr>
                                             <tr>
                                                 <td>所在商圈:</td>
-                                                <td id="bizcircle"></td>
+                                                <td id="bizcircle" th:text="${lianjiaInfo.getShopping()}"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -130,8 +130,7 @@
                             </div>
                             <div class="col-md-7 col-sm-7">
                                 <a href="#" title="小区链接" target="_blank">
-                                    <img src="https://image1.ljcdn.com/hdic-resblock/91bec5d1-417a-494e-b652-bba9a7ce0d2f.jpg.710x400.jpg"
-                                        alt="图片链接">
+                                    <img src="images/lianjiaCommunity.jpg" alt="图片链接">
                                 </a>
                             </div>
                         </div>
@@ -213,137 +212,27 @@
             <h4 style="font-weight: bold"><i class="glyphicon glyphicon-record"></i>小区房源</h4>
         </div>
         <div class="row">
-            <div class="col-sm-6 col-md-4 col-lg-3 " th:each="tongchengAutoInfo:${tongchengAutoInfos}">
+            <div class="col-sm-6 col-md-4 col-lg-3 " th:each="rent:${rentByCommunity}">
                 <div class="rent">
-                    <a href="#" title="小区链接" target="_blank">
-                        <img src="../static/images/58Log.jpg" th:src="${tongchengAutoInfo.communityImg}" alt="图片链接">
+                    <a th:href="${'/community?id=' + rent.id}" title="小区详情" target="_blank">
+                        <img src="images/lianjiaLog.jpg"  alt="图片链接">
                     </a>
                     <div class="caption">
                         <h3>
-                            <a href="#" title="小区详情" target="_blank" >
-                                <span th:text="${tongchengAutoInfo.getCommunityName()}">5000/月</span>
+                            <a href="#" title="房源链接" target="_blank" >
+                                <span th:text="${rent.getCommunity()}"></span>
                             </a>
                         </h3>
                         <p>
-                            <span th:text="${tongchengAutoInfo.getRegional()}">朝阳</span>
-                            <span th:text="${tongchengAutoInfo.getShopping()}">/海淀</span><br/>
-                            <span th:text="${tongchengAutoInfo.getBuildingType()}">中层(8层)</span><br/>
-                            <span th:text="${tongchengAutoInfo.getTabSpecial()}">整租</span><br/>
-                            <a th:href="${tongchengAutoInfo.getCommunityUrl()}" target="_blank">租房详情</a>
-                            | |<a th:href="${tongchengAutoInfo.getRentUrl()}" target="_blank">租房链接</a>
+                            <i th:text="${rent.getRegional()}"></i>
+                            /<i th:text="${rent.getShopping()}"></i><br/>
+                            <i th:text="${rent.getPrice()}"></i><br/>
+                            <i th:text="${rent.getArea()}"></i><br/>
+                            <i th:text="${rent.getTowards()}"></i>
+                            <i th:text="${rent.getFloor()}"></i>
                         </p>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3 " th:each="tongchengAutoInfo:${tongchengAutoInfos}">
-                    <div class="rent">
-                        <a href="#" title="小区链接" target="_blank">
-                            <img src="../static/images/58Log.jpg" th:src="${tongchengAutoInfo.communityImg}" alt="图片链接">
-                        </a>
-                        <div class="caption">
-                            <h3>
-                                <a href="#" title="小区详情" target="_blank" >
-                                    <span th:text="${tongchengAutoInfo.getCommunityName()}">5000/月</span>
-                                </a>
-                            </h3>
-                            <p>
-                                <span th:text="${tongchengAutoInfo.getRegional()}">朝阳</span>
-                                <span th:text="${tongchengAutoInfo.getShopping()}">/海淀</span><br/>
-                                <span th:text="${tongchengAutoInfo.getBuildingType()}">中层(8层)</span><br/>
-                                <span th:text="${tongchengAutoInfo.getTabSpecial()}">整租</span><br/>
-                                <a th:href="${tongchengAutoInfo.getCommunityUrl()}" target="_blank">租房详情</a>
-                                | |<a th:href="${tongchengAutoInfo.getRentUrl()}" target="_blank">租房链接</a>
-                            </p>
-                        </div>
-                    </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3 " th:each="tongchengAutoInfo:${tongchengAutoInfos}">
-                    <div class="rent">
-                        <a href="#" title="小区链接" target="_blank">
-                            <img src="../static/images/58Log.jpg" th:src="${tongchengAutoInfo.communityImg}" alt="图片链接">
-                        </a>
-                        <div class="caption">
-                            <h3>
-                                <a href="#" title="小区详情" target="_blank" >
-                                    <span th:text="${tongchengAutoInfo.getCommunityName()}">5000/月</span>
-                                </a>
-                            </h3>
-                            <p>
-                                <span th:text="${tongchengAutoInfo.getRegional()}">朝阳</span>
-                                <span th:text="${tongchengAutoInfo.getShopping()}">/海淀</span><br/>
-                                <span th:text="${tongchengAutoInfo.getBuildingType()}">中层(8层)</span><br/>
-                                <span th:text="${tongchengAutoInfo.getTabSpecial()}">整租</span><br/>
-                                <a th:href="${tongchengAutoInfo.getCommunityUrl()}" target="_blank">租房详情</a>
-                                | |<a th:href="${tongchengAutoInfo.getRentUrl()}" target="_blank">租房链接</a>
-                            </p>
-                        </div>
-                    </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3 " th:each="tongchengAutoInfo:${tongchengAutoInfos}">
-                    <div class="rent">
-                        <a href="#" title="小区链接" target="_blank">
-                            <img src="../static/images/58Log.jpg" th:src="${tongchengAutoInfo.communityImg}" alt="图片链接">
-                        </a>
-                        <div class="caption">
-                            <h3>
-                                <a href="#" title="小区详情" target="_blank" >
-                                    <span th:text="${tongchengAutoInfo.getCommunityName()}">5000/月</span>
-                                </a>
-                            </h3>
-                            <p>
-                                <span th:text="${tongchengAutoInfo.getRegional()}">朝阳</span>
-                                <span th:text="${tongchengAutoInfo.getShopping()}">/海淀</span><br/>
-                                <span th:text="${tongchengAutoInfo.getBuildingType()}">中层(8层)</span><br/>
-                                <span th:text="${tongchengAutoInfo.getTabSpecial()}">整租</span><br/>
-                                <a th:href="${tongchengAutoInfo.getCommunityUrl()}" target="_blank">租房详情</a>
-                                | |<a th:href="${tongchengAutoInfo.getRentUrl()}" target="_blank">租房链接</a>
-                            </p>
-                        </div>
-                    </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3 " th:each="tongchengAutoInfo:${tongchengAutoInfos}">
-                    <div class="rent">
-                        <a href="#" title="小区链接" target="_blank">
-                            <img src="../static/images/58Log.jpg" th:src="${tongchengAutoInfo.communityImg}" alt="图片链接">
-                        </a>
-                        <div class="caption">
-                            <h3>
-                                <a href="#" title="小区详情" target="_blank" >
-                                    <span th:text="${tongchengAutoInfo.getCommunityName()}">5000/月</span>
-                                </a>
-                            </h3>
-                            <p>
-                                <span th:text="${tongchengAutoInfo.getRegional()}">朝阳</span>
-                                <span th:text="${tongchengAutoInfo.getShopping()}">/海淀</span><br/>
-                                <span th:text="${tongchengAutoInfo.getBuildingType()}">中层(8层)</span><br/>
-                                <span th:text="${tongchengAutoInfo.getTabSpecial()}">整租</span><br/>
-                                <a th:href="${tongchengAutoInfo.getCommunityUrl()}" target="_blank">租房详情</a>
-                                | |<a th:href="${tongchengAutoInfo.getRentUrl()}" target="_blank">租房链接</a>
-                            </p>
-                        </div>
-                    </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3 " th:each="tongchengAutoInfo:${tongchengAutoInfos}">
-                    <div class="rent">
-                        <a href="#" title="小区链接" target="_blank">
-                            <img src="../static/images/58Log.jpg" th:src="${tongchengAutoInfo.communityImg}" alt="图片链接">
-                        </a>
-                        <div class="caption">
-                            <h3>
-                                <a href="#" title="小区详情" target="_blank" >
-                                    <span th:text="${tongchengAutoInfo.getCommunityName()}">5000/月</span>
-                                </a>
-                            </h3>
-                            <p>
-                                <span th:text="${tongchengAutoInfo.getRegional()}">朝阳</span>
-                                <span th:text="${tongchengAutoInfo.getShopping()}">/海淀</span><br/>
-                                <span th:text="${tongchengAutoInfo.getBuildingType()}">中层(8层)</span><br/>
-                                <span th:text="${tongchengAutoInfo.getTabSpecial()}">整租</span><br/>
-                                <a th:href="${tongchengAutoInfo.getCommunityUrl()}" target="_blank">租房详情</a>
-                                | |<a th:href="${tongchengAutoInfo.getRentUrl()}" target="_blank">租房链接</a>
-                            </p>
-                        </div>
-                    </div>
             </div>
         </div>
     </div>
@@ -358,15 +247,19 @@
     </footer>
 
 </body>
-
-</html>
 <!-- 各网站布局的数量 -->
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
     var myChart = echarts.init(document.getElementById('homeEveryNum'));
     //处理后端获取的数据
-    var dataAxis = ['1室0厅1卫', '1室1厅1卫', '1房间1卫', '2室1厅1卫', '2室1厅2卫', '2室2厅1卫', '3室1厅1卫', '3室1厅2卫', '3室2厅2卫'];
-    var lianjiadata = [220, 182, 191, 234, 290, 330, 310, 123, 442];
+    var dataAxis = [];
+    var lianjiadata = [];
     var tongchengdata = [149, 210, 122, 133, 334, 198, 123, 125, 220];
+    //获取后端数据
+    var listHouse = [[${listHoseType}]];
+    for(var i=0; i < listHouse.length; i++){
+        dataAxis[i] = listHouse[i].name;
+        lianjiadata[i] = listHouse[i].num;
+    }
 
     var yMax = 500;
     var dataShadow = [];
@@ -515,8 +408,20 @@
 
 </script>
 <!-- 小区布局结构数量 -->
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
     var myChart = echarts.init(document.getElementById('homeNum'));
+    var dataAxis = [];
+    //获取后端数据
+    var listHouse = [[${rentStringNumPrice}]];
+
+    for(var i=0; i < listHouse.length; i++){
+        var dic = new Map()
+        dic['value'] = listHouse[i].num;
+        dic['name'] = listHouse[i].name;
+        // alert(dic)
+        dataAxis.push(dic);
+        // alert(dataAxis[i])
+    }
     option = {
         tooltip: {
             trigger: 'item',
@@ -535,16 +440,7 @@
                 radius: [30, 110],
                 center: ['50%', '40%'],
                 roseType: 'area',
-                data: [
-                    { value: 10, name: '一室一厅' },
-                    { value: 5, name: '2室2厅1卫' },
-                    { value: 15, name: '3室1厅2卫' },
-                    { value: 25, name: '1室0厅1卫' },
-                    { value: 20, name: '1室1厅1卫' },
-                    { value: 35, name: '2室1厅1卫' },
-                    { value: 30, name: '2室1厅2卫' },
-                    { value: 40, name: '1房间1卫' }
-                ]
+                data: dataAxis
             }
         ]
     };
@@ -560,12 +456,19 @@
     });
 </script>
 <!-- 各网站结构布局的均价 -->
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
     var myChart = echarts.init(document.getElementById('homeEveryPrice'));
     //处理后端获取的数据
-    var dataAxis = ['1室0厅1卫', '1室1厅1卫', '1房间1卫', '2室1厅1卫', '2室1厅2卫', '2室2厅1卫', '3室1厅1卫', '3室1厅2卫', '3室2厅2卫'];
-    var lianjiadata = [220, 182, 191, 234, 290, 330, 310, 123, 442];
+    var dataAxis = [];
+    var lianjiadata = [];
     var tongchengdata = [149, 210, 122, 133, 334, 198, 123, 125, 220];
+
+    //获取后端数据
+    var listHouse = [[${listHoseType}]];
+    for(var i=0; i < listHouse.length; i++){
+        dataAxis[i] = listHouse[i].name;
+        lianjiadata[i] = listHouse[i].price;
+    }
 
     var yMax = 500;
     var dataShadow = [];
@@ -714,8 +617,20 @@
 
 </script>
 <!-- 小区布局均价 -->
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
     var myChart = echarts.init(document.getElementById('homePrice'));
+    var dataAxis = [];
+    //获取后端数据
+    var listHouse = [[${rentStringNumPrice}]];
+
+    for(var i=0; i < listHouse.length; i++){
+        var dic = new Map()
+        dic['value'] = listHouse[i].price;
+        dic['name'] = listHouse[i].name;
+        // alert(dic)
+        dataAxis.push(dic);
+        // alert(dataAxis[i])
+    }
     option = {
         tooltip: {
             trigger: 'item',
@@ -734,16 +649,7 @@
                 radius: [30, 110],
                 center: ['50%', '40%'],
                 roseType: 'area',
-                data: [
-                    { value: 10, name: '一室一厅' },
-                    { value: 5, name: '2室2厅1卫' },
-                    { value: 15, name: '3室1厅2卫' },
-                    { value: 25, name: '1室0厅1卫' },
-                    { value: 20, name: '1室1厅1卫' },
-                    { value: 35, name: '2室1厅1卫' },
-                    { value: 30, name: '2室1厅2卫' },
-                    { value: 40, name: '1房间1卫' }
-                ]
+                data: dataAxis
             }
         ]
     };
@@ -759,9 +665,9 @@
     });
 </script>
 <!-- 地图设置 -->
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
     var map = new BMap.Map("allmap");
-    var point = "石园";
+    var point = "北京"+[[${lianjiaInfo.communityName}]];
     map.centerAndZoom(point, 15);
     // 添加地图类型控件
 	map.addControl(new BMap.MapTypeControl({
@@ -1095,3 +1001,5 @@
         // })
     });
 </script> -->
+
+</html>
