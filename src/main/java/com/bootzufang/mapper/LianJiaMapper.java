@@ -10,6 +10,9 @@ public interface LianJiaMapper {
     //通过ID获取获取小区
     @Select("SELECT * FROM lianjiaCommunityInfo WHERE id=#{id}")
     LianjiaInfo getLianjiaInfo(@Param("id") Integer id);
+    //通过小区名字，查询小区信息
+    @Select("SELECT * FROM lianjiaCommunityInfo WHERE communityName=#{communityName}")
+    LianjiaInfo getLianjiaInfoByName(@Param("communityName") String communityName);
 
     //根据小区名字，获取租房数据库中所有小区的租房信息
     @Select("SELECT * FROM lianjiaRentInfo WHERE  community=#{communityName}")

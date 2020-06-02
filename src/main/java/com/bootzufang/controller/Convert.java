@@ -48,6 +48,33 @@ public class Convert {
         return "index";
     }
 
+    //搜索小区页面
+    @RequestMapping("/searchCommunity")
+    public String searchCommunity(){
+        return "searchCommunity";
+    }
+    //搜索小区转接
+    @RequestMapping("/analysisCommunity")
+    public String analysisCommunity(HttpServletRequest request, Model model){
+        //1、获取小区名字
+        String communityName = request.getParameter("comm");
+        //2、查询小区是否存在
+        LianjiaInfo lianjiaInfo = null;
+        try {
+            lianjiaInfo = lianJiaMapper.getLianjiaInfoByName(communityName);
+        }catch (Exception e){
+            System.out.println("小区不存在");
+
+        }
+
+        //3、存在转发页面
+        if(lianjiaInfo == null){
+            return "searchCommunity";
+        }else{
+            return "forward:/community?id=" + lianjiaInfo.getId();
+        }
+    }
+
     //社区详情展示
     @RequestMapping("/community")
     public String communityPage(HttpServletRequest request, Model model){
